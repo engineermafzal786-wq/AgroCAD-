@@ -1,0 +1,2386 @@
+<!doctype html>
+<html lang="en">
+ <head><script>window["__codeletBootstrap__"]=JSON.parse('{"A":"A","B":"20260703-05-6766c4c"}');</script><script src="/_sdk/f432b76fb310b513.telemetry_sdk.js" integrity="sha512-9FJQ55EKmmqhyyik8BhrMVfm0+iYYfb8uOlRsjtkxJMEI97qOVEI4PnHohDjQAtvAep0IOEpdQ64eki0sz62ug=="></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgroCAD</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'DM Sans', sans-serif; }
+    .tab-active { border-bottom: 3px solid #15803d; color: #15803d; font-weight: 700; }
+    .tab-btn { transition: color 0.2s; }
+    .tab-btn:hover { color: #166534; }
+  </style>
+  <script src="/_sdk/0b3af1c300e720aa.resizing_sdk.js" type="text/javascript" integrity="sha512-nX1P6oXZmEY5wCI2lUVg3BwKu1cr0yi+ZpXgZ0Yn90vkSwvpmyzBMvOyD6VLJUtBwFI2dSrw1b6OvORxSggw3w=="></script>
+ </head>
+ <body data-template-id="__page-root" class="min-h-screen w-full">
+  <header data-template-id="header-bg" class="canva-header p-5 shadow-md">
+   <div class="max-w-6xl mx-auto flex items-center gap-3">
+    <i data-lucide="leaf" class="w-7 h-7 text-white"></i>
+    <h1 data-template-id="app-title" class="canva-text font-bold"></h1>
+   </div>
+  </header>
+  <main class="max-w-6xl mx-auto p-4 space-y-6">
+   <nav class="flex border-b gap-1 overflow-x-auto" role="tablist">
+    <button class="tab-btn tab-active px-3 py-2 text-sm whitespace-nowrap" data-tab="farms">Farms</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="crops">Crops</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="water">Water</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="irrigation">Irrigation</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="leveling">Leveling</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="pump">Pump</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="solar">Solar</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="drip">Drip/Sprinkler</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="pipe">Pipe</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="soil">Soil</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="machinery">Machinery</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="economics">Economics</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="reports">Reports</button> <button class="tab-btn px-3 py-2 text-sm whitespace-nowrap" data-tab="consultant">AI Consultant</button>
+   </nav><!-- Farms Tab -->
+   <section id="tab-farms" class="space-y-4">
+    <div id="farm-dashboard" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+     <div class="bg-white rounded-lg p-3 shadow-sm text-center">
+      <p class="text-2xl font-bold text-green-700" id="dash-total">0</p>
+      <p class="text-xs text-gray-500">Total Farms</p>
+     </div>
+     <div class="bg-white rounded-lg p-3 shadow-sm text-center">
+      <p class="text-2xl font-bold text-green-700" id="dash-area">0</p>
+      <p class="text-xs text-gray-500">Total Acres</p>
+     </div>
+     <div class="bg-white rounded-lg p-3 shadow-sm text-center">
+      <p class="text-2xl font-bold text-green-700" id="dash-drip">0</p>
+      <p class="text-xs text-gray-500">Drip Farms</p>
+     </div>
+     <div class="bg-white rounded-lg p-3 shadow-sm text-center">
+      <p class="text-2xl font-bold text-green-700" id="dash-sprinkler">0</p>
+      <p class="text-xs text-gray-500">Sprinkler Farms</p>
+     </div>
+    </div>
+    <div class="flex flex-wrap gap-2">
+     <input id="search-input" type="text" placeholder="Search farms..." class="border rounded-lg px-3 py-2 text-sm flex-1 min-w-[150px]"> <select id="filter-province" class="border rounded-lg px-3 py-2 text-sm"> <option value="">All Provinces</option><option>Punjab</option><option>Sindh</option><option>KPK</option><option>Balochistan</option><option>Islamabad</option> </select> <select id="filter-irrigation" class="border rounded-lg px-3 py-2 text-sm"> <option value="">All Methods</option><option>Flood</option><option>Drip</option><option>Sprinkler</option><option>Furrow</option> </select>
+    </div><button id="toggle-form-btn" class="flex items-center gap-2 px-4 py-2 bg-green-700 text-white rounded-lg text-sm font-medium hover:bg-green-800"> <i data-lucide="plus" class="w-4 h-4"></i> Add Farm Profile </button>
+    <form id="farm-form" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+     <h2 data-template-id="form-title" class="canva-text font-bold"></h2>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div><label for="farm_name" class="text-xs font-medium text-gray-600">Farm Name</label><input id="farm_name" class="w-full border rounded-lg px-3 py-2 text-sm" required>
+      </div>
+      <div><label for="client_name" class="text-xs font-medium text-gray-600">Client Name</label><input id="client_name" class="w-full border rounded-lg px-3 py-2 text-sm" required>
+      </div>
+      <div><label for="contact" class="text-xs font-medium text-gray-600">Contact Number</label><input id="contact" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="gps_location" class="text-xs font-medium text-gray-600">GPS Location</label><input id="gps_location" placeholder="e.g. 31.5204, 74.3587" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="province" class="text-xs font-medium text-gray-600">Province</label><select id="province" class="w-full border rounded-lg px-3 py-2 text-sm"><option value="">Select</option><option>Punjab</option><option>Sindh</option><option>KPK</option><option>Balochistan</option><option>Islamabad</option></select>
+      </div>
+      <div><label for="district" class="text-xs font-medium text-gray-600">District</label><input id="district" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="area_acres" class="text-xs font-medium text-gray-600">Area (Acres)</label><input id="area_acres" type="number" step="0.1" class="w-full border rounded-lg px-3 py-2 text-sm" required>
+      </div>
+      <div><label for="soil_type" class="text-xs font-medium text-gray-600">Soil Type</label><select id="soil_type" class="w-full border rounded-lg px-3 py-2 text-sm"><option value="">Select</option><option>Clay</option><option>Loam</option><option>Sandy</option><option>Silt</option><option>Clay Loam</option><option>Sandy Loam</option><option>Silty Clay</option></select>
+      </div>
+      <div><label for="water_source" class="text-xs font-medium text-gray-600">Water Source</label><select id="water_source" class="w-full border rounded-lg px-3 py-2 text-sm"><option value="">Select</option><option>Canal</option><option>Tubewell</option><option>Both</option><option>Rainwater</option></select>
+      </div>
+      <div><label for="irrigation_method" class="text-xs font-medium text-gray-600">Irrigation Method</label><select id="irrigation_method" class="w-full border rounded-lg px-3 py-2 text-sm"><option value="">Select</option><option>Flood</option><option>Drip</option><option>Sprinkler</option><option>Furrow</option></select>
+      </div>
+      <div><label for="main_crop" class="text-xs font-medium text-gray-600">Main Crop</label><input id="main_crop" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div>
+     <div class="flex gap-2">
+      <button type="submit" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium hover:bg-green-800">Save Profile</button> <button type="button" id="cancel-form" class="px-5 py-2 bg-gray-200 text-gray-700 rounded-lg text-sm">Cancel</button>
+     </div>
+     <div id="form-status" class="text-sm hidden"></div>
+    </form>
+    <div id="profiles-list" class="space-y-3"></div>
+    <p id="empty-profiles" data-template-id="empty-msg" class="canva-text text-center py-8"></p>
+   </section><!-- Crops Tab -->
+   <section id="tab-crops" class="hidden space-y-4">
+    <div class="bg-white rounded-xl p-5 shadow">
+     <h2 data-template-id="crops-title" class="canva-text font-bold mb-4"></h2><input id="crop-search" type="text" placeholder="Search crops..." class="border rounded-lg px-3 py-2 text-sm w-full mb-4">
+     <div id="crops-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3"></div>
+     <div id="crop-detail" class="hidden mt-6 p-4 bg-green-50 rounded-lg border-l-4 border-green-600">
+      <h3 id="crop-name" class="font-bold text-lg text-green-900 mb-3"></h3>
+      <div class="grid grid-cols-2 gap-2 text-sm">
+       <div>
+        <p class="text-gray-600">Kc Initial</p>
+        <p id="crop-kc-init" class="font-semibold text-gray-900"></p>
+       </div>
+       <div>
+        <p class="text-gray-600">Kc Mid</p>
+        <p id="crop-kc-mid" class="font-semibold text-gray-900"></p>
+       </div>
+       <div>
+        <p class="text-gray-600">Kc End</p>
+        <p id="crop-kc-end" class="font-semibold text-gray-900"></p>
+       </div>
+       <div>
+        <p class="text-gray-600">Root Depth (cm)</p>
+        <p id="crop-root" class="font-semibold text-gray-900"></p>
+       </div>
+       <div>
+        <p class="text-gray-600">Seasonal Water (mm)</p>
+        <p id="crop-water" class="font-semibold text-gray-900"></p>
+       </div>
+       <div>
+        <p class="text-gray-600">Yield Benchmark</p>
+        <p id="crop-yield" class="font-semibold text-gray-900"></p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </section><!-- Water Tab -->
+   <section id="tab-water" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="water-title" class="canva-text font-bold"></h2>
+    <p data-template-id="water-desc" class="canva-text text-sm"></p>
+    <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+     <h3 class="font-bold text-blue-900 mb-3">FAO-56 Penman-Monteith ET₀ Calculator</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="w-temp-max" class="text-xs font-medium text-gray-600">Max Temperature (°C)</label><input id="w-temp-max" type="number" step="0.1" value="35" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-temp-min" class="text-xs font-medium text-gray-600">Min Temperature (°C)</label><input id="w-temp-min" type="number" step="0.1" value="20" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-humidity" class="text-xs font-medium text-gray-600">Relative Humidity (%)</label><input id="w-humidity" type="number" step="0.1" value="60" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-wind" class="text-xs font-medium text-gray-600">Wind Speed @ 2m (m/s)</label><input id="w-wind" type="number" step="0.1" value="2.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-radiation" class="text-xs font-medium text-gray-600">Solar Radiation (MJ/m²/day)</label><input id="w-radiation" type="number" step="0.1" value="20" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-altitude" class="text-xs font-medium text-gray-600">Altitude (m)</label><input id="w-altitude" type="number" value="100" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="calcET0()" class="px-5 py-2 bg-blue-700 text-white rounded-lg text-sm font-medium">Calculate ET₀</button>
+     <div id="et0-result" class="mt-3 p-3 bg-white rounded-lg hidden border border-blue-200"></div>
+    </div>
+    <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+     <h3 class="font-bold text-green-900 mb-3">Water Requirement &amp; Scheduling</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="w-area" class="text-xs font-medium text-gray-600">Area (Acres)</label><input id="w-area" type="number" step="0.1" value="5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-eto-input" class="text-xs font-medium text-gray-600">ET₀ (mm/day)</label><input id="w-eto-input" type="number" step="0.1" value="5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-kc" class="text-xs font-medium text-gray-600">Crop Coefficient (Kc)</label><input id="w-kc" type="number" step="0.01" value="1.0" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-eff" class="text-xs font-medium text-gray-600">Irrigation Efficiency (%)</label><input id="w-eff" type="number" value="70" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-rain" class="text-xs font-medium text-gray-600">Rainfall (mm/day) - Optional</label><input id="w-rain" type="number" step="0.1" value="0" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="w-days" class="text-xs font-medium text-gray-600">Season Length (days)</label><input id="w-days" type="number" value="120" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="calcWater()" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Calculate Requirements</button>
+     <div id="water-result" class="mt-3 p-4 bg-white rounded-lg hidden border border-green-200"></div>
+    </div>
+   </section><!-- Irrigation Tab -->
+   <section id="tab-irrigation" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="irr-title" class="canva-text font-bold"></h2>
+    <p data-template-id="irr-desc" class="canva-text text-sm"></p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+     <div><label for="i-root" class="text-xs font-medium text-gray-600">Root Depth (cm)</label><input id="i-root" type="number" value="60" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="i-fc" class="text-xs font-medium text-gray-600">Field Capacity (%)</label><input id="i-fc" type="number" value="30" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="i-pwp" class="text-xs font-medium text-gray-600">Wilting Point (%)</label><input id="i-pwp" type="number" value="15" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="i-mad" class="text-xs font-medium text-gray-600">MAD (%)</label><input id="i-mad" type="number" value="50" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="i-eto" class="text-xs font-medium text-gray-600">ETc (mm/day)</label><input id="i-eto" type="number" step="0.1" value="5" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+    </div><button type="button" onclick="calcIrrigation()" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Calculate</button>
+    <div id="irr-result" class="p-4 bg-green-50 rounded-lg hidden"></div>
+   </section><!-- Leveling Tab -->
+   <section id="tab-leveling" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="level-title" class="canva-text font-bold"></h2>
+    <p data-template-id="level-desc" class="canva-text text-sm"></p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+     <div><label for="l-length" class="text-xs font-medium text-gray-600">Field Length (m)</label><input id="l-length" type="number" value="100" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="l-width" class="text-xs font-medium text-gray-600">Field Width (m)</label><input id="l-width" type="number" value="50" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="l-high" class="text-xs font-medium text-gray-600">Highest Elevation (m)</label><input id="l-high" type="number" step="0.01" value="2.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="l-low" class="text-xs font-medium text-gray-600">Lowest Elevation (m)</label><input id="l-low" type="number" step="0.01" value="1.8" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="l-avg" class="text-xs font-medium text-gray-600">Average Elevation (m)</label><input id="l-avg" type="number" step="0.01" value="2.1" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+    </div><button type="button" onclick="calcLeveling()" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Calculate</button>
+    <div id="level-result" class="p-4 bg-green-50 rounded-lg hidden"></div>
+   </section><!-- Pump Tab -->
+   <section id="tab-pump" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="pump-title" class="canva-text font-bold"></h2>
+    <p data-template-id="pump-desc" class="canva-text text-sm"></p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+     <div><label for="p-discharge" class="text-xs font-medium text-gray-600">Discharge (L/s)</label><input id="p-discharge" type="number" step="0.1" value="10" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="p-static" class="text-xs font-medium text-gray-600">Static Head (m)</label><input id="p-static" type="number" step="0.1" value="20" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="p-friction" class="text-xs font-medium text-gray-600">Friction Loss (m)</label><input id="p-friction" type="number" step="0.1" value="3" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="p-delivery" class="text-xs font-medium text-gray-600">Delivery Head (m)</label><input id="p-delivery" type="number" step="0.1" value="2" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="p-peff" class="text-xs font-medium text-gray-600">Pump Efficiency (%)</label><input id="p-peff" type="number" value="65" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="p-meff" class="text-xs font-medium text-gray-600">Motor Efficiency (%)</label><input id="p-meff" type="number" value="85" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+    </div><button type="button" onclick="calcPump()" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Calculate</button>
+    <div id="pump-result" class="p-4 bg-green-50 rounded-lg hidden"></div>
+   </section><!-- Solar Tab -->
+   <section id="tab-solar" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="solar-title" class="canva-text font-bold"></h2>
+    <p data-template-id="solar-desc" class="canva-text text-sm"></p>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+     <div><label for="s-water" class="text-xs font-medium text-gray-600">Daily Water Need (m³)</label><input id="s-water" type="number" step="1" value="50" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="s-tdh" class="text-xs font-medium text-gray-600">Total Dynamic Head (m)</label><input id="s-tdh" type="number" step="0.1" value="25" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="s-psh" class="text-xs font-medium text-gray-600">Peak Sun Hours (hrs)</label><input id="s-psh" type="number" step="0.1" value="5.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="s-peff" class="text-xs font-medium text-gray-600">Pump Efficiency (%)</label><input id="s-peff" type="number" value="50" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+     <div><label for="s-panel" class="text-xs font-medium text-gray-600">Panel Wattage (W)</label><input id="s-panel" type="number" value="540" class="w-full border rounded-lg px-3 py-2 text-sm">
+     </div>
+    </div><button type="button" onclick="calcSolar()" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Calculate</button>
+    <div id="solar-result" class="p-4 bg-green-50 rounded-lg hidden"></div>
+   </section><!-- Drip/Sprinkler Tab -->
+   <section id="tab-drip" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="drip-title" class="canva-text font-bold"></h2>
+    <p data-template-id="drip-desc" class="canva-text text-sm"></p>
+    <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+     <h3 class="font-bold text-green-900 mb-3">Quick Drip System Calculator</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div><label for="d-area" class="text-xs font-medium text-gray-600">Area (Acres)</label><input id="d-area" type="number" step="0.1" value="5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="d-spacing-row" class="text-xs font-medium text-gray-600">Row Spacing (m)</label><input id="d-spacing-row" type="number" step="0.1" value="1.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="d-spacing-emitter" class="text-xs font-medium text-gray-600">Emitter Spacing (m)</label><input id="d-spacing-emitter" type="number" step="0.1" value="0.4" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="d-emitter-rate" class="text-xs font-medium text-gray-600">Emitter Flow Rate (L/hr)</label><input id="d-emitter-rate" type="number" step="0.1" value="4" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="d-daily" class="text-xs font-medium text-gray-600">Daily Crop Need (mm)</label><input id="d-daily" type="number" step="0.1" value="5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="calcDrip()" class="mt-3 px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Calculate</button>
+     <div id="drip-result" class="p-4 bg-white rounded-lg hidden border border-green-200 mt-3"></div>
+    </div>
+    <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+     <h3 class="font-bold text-blue-900 mb-3">Complete Drip Irrigation Design</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="dd-crop" class="text-xs font-medium text-gray-600">Crop</label><select id="dd-crop" class="w-full border rounded-lg px-3 py-2 text-sm"><option value="">Select Crop</option><option>Wheat</option><option>Rice</option><option>Maize</option><option>Cotton</option><option>Sugarcane</option><option>Potato</option><option>Tomato</option><option>Onion</option><option>Chili</option><option>Sunflower</option><option>Mustard</option><option>Citrus</option><option>Mango</option><option>Banana</option><option>Guava</option></select>
+      </div>
+      <div><label for="dd-plant-spacing" class="text-xs font-medium text-gray-600">Plant Spacing (m)</label><input id="dd-plant-spacing" type="number" step="0.01" value="0.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="dd-row-spacing" class="text-xs font-medium text-gray-600">Row Spacing (m)</label><input id="dd-row-spacing" type="number" step="0.1" value="1.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="dd-emitter-flow" class="text-xs font-medium text-gray-600">Emitter Flow (L/hr)</label><input id="dd-emitter-flow" type="number" step="0.1" value="4" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="dd-field-length" class="text-xs font-medium text-gray-600">Field Length (m)</label><input id="dd-field-length" type="number" step="1" value="200" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="dd-field-width" class="text-xs font-medium text-gray-600">Field Width (m)</label><input id="dd-field-width" type="number" step="1" value="100" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="dd-lateral-diameter" class="text-xs font-medium text-gray-600">Lateral Diameter (mm)</label><input id="dd-lateral-diameter" type="number" value="16" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="dd-submain-diameter" class="text-xs font-medium text-gray-600">Submain Diameter (mm)</label><input id="dd-submain-diameter" type="number" value="25" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="dd-mainline-diameter" class="text-xs font-medium text-gray-600">Mainline Diameter (mm)</label><input id="dd-mainline-diameter" type="number" value="40" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="dd-operating-hours" class="text-xs font-medium text-gray-600">Daily Operating Hours</label><input id="dd-operating-hours" type="number" step="0.5" value="8" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="designDripSystem()" class="px-5 py-2 bg-blue-700 text-white rounded-lg text-sm font-medium">Generate Design Report</button>
+     <div id="drip-design-result" class="p-4 bg-white rounded-lg hidden border border-blue-200 mt-3 space-y-4"></div>
+    </div>
+    <div class="bg-orange-50 rounded-lg p-4 border-l-4 border-orange-600">
+     <h3 class="font-bold text-orange-900 mb-3">Sprinkler System Design</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="sp-design-area" class="text-xs font-medium text-gray-600">Field Area (Acres)</label><input id="sp-design-area" type="number" step="0.1" value="5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="sp-design-daily-need" class="text-xs font-medium text-gray-600">Daily Water Need (mm)</label><input id="sp-design-daily-need" type="number" step="0.1" value="5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="sp-design-operating-hrs" class="text-xs font-medium text-gray-600">Daily Operating Hours</label><input id="sp-design-operating-hrs" type="number" step="0.5" value="8" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="sp-design-sprinkler-type" class="text-xs font-medium text-gray-600">Sprinkler Type</label><select id="sp-design-sprinkler-type" class="w-full border rounded-lg px-3 py-2 text-sm"><option value="impact">Impact Sprinkler</option><option value="rotor">Rotor (Large Area)</option><option value="micro">Micro Sprinkler</option></select>
+      </div>
+      <div><label for="sp-design-spacing" class="text-xs font-medium text-gray-600">Sprinkler Spacing (m)</label><input id="sp-design-spacing" type="number" step="0.1" value="6" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="sp-design-pressure" class="text-xs font-medium text-gray-600">Operating Pressure (bar)</label><input id="sp-design-pressure" type="number" step="0.1" value="2.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="sp-design-throw-radius" class="text-xs font-medium text-gray-600">Throw Radius (m)</label><input id="sp-design-throw-radius" type="number" step="0.1" value="6" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="sp-design-cu-target" class="text-xs font-medium text-gray-600">Target CU (%)</label><input id="sp-design-cu-target" type="number" value="75" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="designSprinklerSystem()" class="px-5 py-2 bg-orange-700 text-white rounded-lg text-sm font-medium">Generate Design Report</button>
+     <div id="sprinkler-design-result" class="p-4 bg-white rounded-lg hidden border border-orange-200 mt-3 space-y-4"></div>
+    </div>
+   </section><!-- Pipe Tab -->
+   <section id="tab-pipe" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="pipe-title" class="canva-text font-bold"></h2>
+    <p data-template-id="pipe-desc" class="canva-text text-sm"></p>
+    <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-600">
+     <h3 class="font-bold text-purple-900 mb-3">Pipe Diameter Recommendation</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="pp-rec-flow" class="text-xs font-medium text-gray-600">Flow Rate (L/s)</label><input id="pp-rec-flow" type="number" step="0.1" value="10" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="pp-rec-velocity" class="text-xs font-medium text-gray-600">Design Velocity (m/s)</label><input id="pp-rec-velocity" type="number" step="0.1" value="1.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="recommendPipeDiameter()" class="px-5 py-2 bg-purple-700 text-white rounded-lg text-sm font-medium">Recommend Diameter</button>
+     <div id="pipe-rec-result" class="mt-3 p-3 bg-white rounded-lg hidden border border-purple-200"></div>
+    </div>
+    <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+     <h3 class="font-bold text-blue-900 mb-3">Hazen-Williams Equation</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="pp-hw-flow" class="text-xs font-medium text-gray-600">Flow Rate (L/s)</label><input id="pp-hw-flow" type="number" step="0.1" value="10" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="pp-hw-dia" class="text-xs font-medium text-gray-600">Pipe Diameter (mm)</label><input id="pp-hw-dia" type="number" value="100" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="pp-hw-length" class="text-xs font-medium text-gray-600">Pipe Length (m)</label><input id="pp-hw-length" type="number" value="200" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="pp-hw-c" class="text-xs font-medium text-gray-600">Roughness Coefficient C</label><input id="pp-hw-c" type="number" value="150" class="w-full border rounded-lg px-3 py-2 text-sm">
+       <p class="text-xs text-gray-500 mt-0.5">PVC:150, Steel:120, Cast Iron:100</p>
+      </div>
+     </div><button type="button" onclick="calcHazenWilliams()" class="px-5 py-2 bg-blue-700 text-white rounded-lg text-sm font-medium">Calculate</button>
+     <div id="pipe-hw-result" class="mt-3 p-3 bg-white rounded-lg hidden border border-blue-200"></div>
+    </div>
+    <div class="bg-cyan-50 rounded-lg p-4 border-l-4 border-cyan-600">
+     <h3 class="font-bold text-cyan-900 mb-3">Darcy-Weisbach Equation</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="pp-dw-flow" class="text-xs font-medium text-gray-600">Flow Rate (L/s)</label><input id="pp-dw-flow" type="number" step="0.1" value="10" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="pp-dw-dia" class="text-xs font-medium text-gray-600">Pipe Diameter (mm)</label><input id="pp-dw-dia" type="number" value="100" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="pp-dw-length" class="text-xs font-medium text-gray-600">Pipe Length (m)</label><input id="pp-dw-length" type="number" value="200" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="pp-dw-roughness" class="text-xs font-medium text-gray-600">Absolute Roughness (mm)</label><input id="pp-dw-roughness" type="number" step="0.01" value="0.045" class="w-full border rounded-lg px-3 py-2 text-sm">
+       <p class="text-xs text-gray-500 mt-0.5">PVC:0.0015, Steel:0.045, Cast Iron:0.26</p>
+      </div>
+     </div><button type="button" onclick="calcDarcyWeisbach()" class="px-5 py-2 bg-cyan-700 text-white rounded-lg text-sm font-medium">Calculate</button>
+     <div id="pipe-dw-result" class="mt-3 p-3 bg-white rounded-lg hidden border border-cyan-200"></div>
+    </div>
+   </section><!-- Soil Tab -->
+   <section id="tab-soil" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="soil-title" class="canva-text font-bold"></h2>
+    <p data-template-id="soil-desc" class="canva-text text-sm"></p>
+    <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+     <h3 class="font-bold text-green-900 mb-3">Texture Classification</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+      <div><label for="so-sand" class="text-xs font-medium text-gray-600">Sand (%)</label><input id="so-sand" type="number" value="40" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="so-silt" class="text-xs font-medium text-gray-600">Silt (%)</label><input id="so-silt" type="number" value="40" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="so-clay" class="text-xs font-medium text-gray-600">Clay (%)</label><input id="so-clay" type="number" value="20" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="so-om" class="text-xs font-medium text-gray-600">Organic Matter (%)</label><input id="so-om" type="number" step="0.1" value="2.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="calcSoil()" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Classify Texture</button>
+     <div id="soil-result" class="mt-3 p-3 bg-white rounded-lg hidden border border-green-200"></div>
+    </div>
+    <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+     <h3 class="font-bold text-blue-900 mb-3">Bulk Density &amp; Porosity</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="so-dry-weight" class="text-xs font-medium text-gray-600">Dry Weight (g)</label><input id="so-dry-weight" type="number" step="0.1" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="so-core-volume" class="text-xs font-medium text-gray-600">Core Volume (cm³)</label><input id="so-core-volume" type="number" step="0.1" value="100" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="so-particle-density" class="text-xs font-medium text-gray-600">Particle Density (g/cm³)</label><input id="so-particle-density" type="number" step="0.01" value="2.65" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="so-infiltration-obs" class="text-xs font-medium text-gray-600">Infiltration Rate (mm/hr)</label><input id="so-infiltration-obs" type="number" step="0.1" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="calcBulkDensity()" class="px-5 py-2 bg-blue-700 text-white rounded-lg text-sm font-medium">Calculate BD &amp; Porosity</button>
+     <div id="bd-result" class="mt-3 p-3 bg-white rounded-lg hidden border border-blue-200"></div>
+    </div>
+    <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-600">
+     <h3 class="font-bold text-amber-900 mb-3">Salinity, pH &amp; Sodicity Assessment</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="so-ec" class="text-xs font-medium text-gray-600">Electrical Conductivity (dS/m)</label><input id="so-ec" type="number" step="0.1" value="2.0" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="so-ph" class="text-xs font-medium text-gray-600">Soil pH</label><input id="so-ph" type="number" step="0.1" value="7.5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="so-cec" class="text-xs font-medium text-gray-600">Cation Exchange Capacity (cmol/kg)</label><input id="so-cec" type="number" step="0.1" value="15" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="so-ese" class="text-xs font-medium text-gray-600">Exchangeable Sodium % (ESP)</label><input id="so-ese" type="number" step="0.1" value="5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="calcSalinity()" class="px-5 py-2 bg-amber-700 text-white rounded-lg text-sm font-medium">Assess Chemistry</button>
+     <div id="salinity-result" class="mt-3 p-3 bg-white rounded-lg hidden border border-amber-200"></div>
+    </div>
+    <div id="soil-health-report" class="hidden bg-gradient-to-b from-green-50 to-blue-50 rounded-lg p-4 border-2 border-green-600 space-y-4">
+     <div class="font-bold text-lg text-green-900">
+      🌍 Comprehensive Soil Health Report
+     </div>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div class="bg-white p-3 rounded border-l-4 border-green-600">
+       <p class="font-semibold text-green-800 mb-2">Texture &amp; Composition</p>
+       <p class="text-xs text-gray-700">Texture: <strong id="rpt-texture">—</strong></p>
+       <p class="text-xs text-gray-700">Composition: <strong id="rpt-composition">—</strong></p>
+       <p class="text-xs text-gray-700">AWC: <strong id="rpt-awc">—</strong></p>
+      </div>
+      <div class="bg-white p-3 rounded border-l-4 border-blue-600">
+       <p class="font-semibold text-blue-800 mb-2">Physical Properties</p>
+       <p class="text-xs text-gray-700">Bulk Density: <strong id="rpt-bulk-density">—</strong></p>
+       <p class="text-xs text-gray-700">Porosity: <strong id="rpt-porosity">—</strong></p>
+       <p class="text-xs text-gray-700">Drainage: <strong id="rpt-drainage">—</strong></p>
+      </div>
+      <div class="bg-white p-3 rounded border-l-4 border-yellow-600">
+       <p class="font-semibold text-yellow-800 mb-2">Infiltration &amp; Permeability</p>
+       <p class="text-xs text-gray-700">Rate: <strong id="rpt-infiltration">—</strong></p>
+       <p class="text-xs text-gray-700">Class: <strong id="rpt-infiltration-status">—</strong></p>
+      </div>
+      <div class="bg-white p-3 rounded border-l-4 border-purple-600">
+       <p class="font-semibold text-purple-800 mb-2">Chemical Properties</p>
+       <p class="text-xs text-gray-700">pH: <strong id="rpt-ph-value">—</strong> (<span id="rpt-ph-status">—</span>)</p>
+       <p class="text-xs text-gray-700">Salinity: <strong id="rpt-ec">—</strong></p>
+       <p class="text-xs text-gray-700"><span id="rpt-salinity-level">—</span></p>
+      </div>
+      <div class="bg-white p-3 rounded border-l-4 border-indigo-600">
+       <p class="font-semibold text-indigo-800 mb-2">Nutrient &amp; Sodicity</p>
+       <p class="text-xs text-gray-700">CEC: <strong id="rpt-cec">—</strong></p>
+       <p class="text-xs text-gray-700"><span id="rpt-cec-status">—</span></p>
+       <p class="text-xs text-gray-700">ESP: <strong id="rpt-esp">—</strong></p>
+      </div>
+      <div class="bg-white p-3 rounded border-l-4 border-cyan-600">
+       <p class="font-semibold text-cyan-800 mb-2">Organic Matter</p>
+       <p class="text-xs text-gray-700">OM: <strong id="rpt-om">—</strong></p>
+       <p class="text-xs text-gray-700"><span id="rpt-om-status">—</span></p>
+       <p class="text-xs text-gray-700"><span id="rpt-sodicity">—</span></p>
+      </div>
+     </div>
+     <div class="bg-white p-3 rounded border-l-4 border-orange-600">
+      <p class="font-semibold text-orange-800 mb-2">Management Recommendations</p>
+      <ul id="rpt-recommendations" class="text-xs text-gray-700 space-y-1"></ul>
+     </div>
+     <div class="bg-gradient-to-r from-green-100 to-emerald-100 p-3 rounded border-2 border-green-600">
+      <p class="font-bold text-green-900 text-sm">Overall Soil Health Score</p>
+      <p class="text-3xl font-bold text-green-800 mt-1"><span id="rpt-health-score">—</span></p>
+      <p class="text-sm font-semibold text-green-900" id="rpt-health-desc">—</p>
+     </div>
+    </div>
+   </section><!-- Machinery Tab -->
+   <section id="tab-machinery" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="mach-title" class="canva-text font-bold"></h2>
+    <p data-template-id="mach-desc" class="canva-text text-sm"></p>
+    <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+     <h3 class="font-bold text-blue-900 mb-3">Tractor Selection</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="m-tractor-hp" class="text-xs font-medium text-gray-600">Select Tractor (HP)</label><select id="m-tractor-hp" class="w-full border rounded-lg px-3 py-2 text-sm"><option value="">-- Select --</option><option value="25">25 HP</option><option value="35">35 HP</option><option value="50">50 HP</option><option value="60">60 HP</option><option value="75">75 HP</option><option value="85">85 HP</option><option value="100">100 HP</option><option value="120">120 HP</option><option value="150">150 HP</option><option value="200">200 HP</option></select>
+      </div>
+      <div><label for="m-tractor-cost" class="text-xs font-medium text-gray-600">Tractor Cost (PKR)</label><input id="m-tractor-cost" type="number" value="2500000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div>
+    </div>
+    <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+     <h3 class="font-bold text-green-900 mb-3">Field Capacity Calculator</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="m-width" class="text-xs font-medium text-gray-600">Implement Width (m)</label><input id="m-width" type="number" step="0.1" value="3" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="m-speed" class="text-xs font-medium text-gray-600">Operating Speed (km/hr)</label><input id="m-speed" type="number" step="0.1" value="5" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="m-eff" class="text-xs font-medium text-gray-600">Field Efficiency (%)</label><input id="m-eff" type="number" value="75" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="m-area" class="text-xs font-medium text-gray-600">Total Area to Cover (Acres)</label><input id="m-area" type="number" step="0.1" value="20" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="calcFieldCapacity()" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Calculate Field Capacity</button>
+     <div id="fc-result" class="mt-3 p-3 bg-white rounded-lg hidden border border-green-200"></div>
+    </div>
+    <div class="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-600">
+     <h3 class="font-bold text-yellow-900 mb-3">Machinery Economics</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="m-fuel" class="text-xs font-medium text-gray-600">Fuel Consumption (L/hr)</label><input id="m-fuel" type="number" step="0.1" value="8" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="m-fuel-cost" class="text-xs font-medium text-gray-600">Fuel Cost (PKR/L)</label><input id="m-fuel-cost" type="number" value="290" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="m-useful-life" class="text-xs font-medium text-gray-600">Useful Life (years)</label><input id="m-useful-life" type="number" value="10" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="m-salvage" class="text-xs font-medium text-gray-600">Salvage Value (%)</label><input id="m-salvage" type="number" value="20" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="m-maintenance" class="text-xs font-medium text-gray-600">Annual Maintenance (PKR)</label><input id="m-maintenance" type="number" value="50000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="m-annual-hours" class="text-xs font-medium text-gray-600">Est. Annual Operating Hours</label><input id="m-annual-hours" type="number" value="500" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="calcMachineryEconomics()" class="px-5 py-2 bg-yellow-700 text-white rounded-lg text-sm font-medium">Generate Economics Report</button>
+     <div id="mach-econ-result" class="mt-3 p-4 bg-white rounded-lg hidden border border-yellow-200 space-y-4"></div>
+    </div>
+   </section><!-- Economics Tab -->
+   <section id="tab-economics" class="hidden bg-white rounded-xl p-5 shadow space-y-4">
+    <h2 data-template-id="econ-title" class="canva-text font-bold"></h2>
+    <p data-template-id="econ-desc" class="canva-text text-sm"></p>
+    <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+     <h3 class="font-bold text-green-900 mb-3">Farm Revenue Calculator</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="fe-area" class="text-xs font-medium text-gray-600">Farm Area (Acres)</label><input id="fe-area" type="number" step="0.1" value="10" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-crop" class="text-xs font-medium text-gray-600">Main Crop</label><select id="fe-crop" class="w-full border rounded-lg px-3 py-2 text-sm"><option value="">Select Crop</option><option value="Wheat">Wheat</option><option value="Rice">Rice</option><option value="Maize">Maize</option><option value="Cotton">Cotton</option><option value="Sugarcane">Sugarcane</option><option value="Potato">Potato</option><option value="Tomato">Tomato</option><option value="Onion">Onion</option><option value="Citrus">Citrus</option><option value="Mango">Mango</option></select>
+      </div>
+      <div><label for="fe-yield" class="text-xs font-medium text-gray-600">Expected Yield (Tons/Acre)</label><input id="fe-yield" type="number" step="0.1" value="3" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-price" class="text-xs font-medium text-gray-600">Market Price (PKR/Ton)</label><input id="fe-price" type="number" value="50000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div><button type="button" onclick="calcFarmEconomics()" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Calculate Farm Economics</button>
+     <div id="farm-econ-result" class="mt-3 p-4 bg-white rounded-lg hidden border border-green-200 space-y-4"></div>
+    </div>
+    <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+     <h3 class="font-bold text-blue-900 mb-3">Cost of Production Analysis</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="fe-seed" class="text-xs font-medium text-gray-600">Seed Cost (PKR/Acre)</label><input id="fe-seed" type="number" value="8000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-fert" class="text-xs font-medium text-gray-600">Fertilizer Cost (PKR/Acre)</label><input id="fe-fert" type="number" value="12000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-pesticides" class="text-xs font-medium text-gray-600">Pesticides (PKR/Acre)</label><input id="fe-pesticides" type="number" value="5000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-irrigation" class="text-xs font-medium text-gray-600">Irrigation Cost (PKR/Acre)</label><input id="fe-irrigation" type="number" value="15000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-labor" class="text-xs font-medium text-gray-600">Labor Cost (PKR/Acre)</label><input id="fe-labor" type="number" value="20000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-machinery" class="text-xs font-medium text-gray-600">Machinery/Rent (PKR/Acre)</label><input id="fe-machinery" type="number" value="10000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-other" class="text-xs font-medium text-gray-600">Other Costs (PKR/Acre)</label><input id="fe-other" type="number" value="5000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-land-rent" class="text-xs font-medium text-gray-600">Land Rent/Lease (PKR/Acre)</label><input id="fe-land-rent" type="number" value="0" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div>
+    </div>
+    <div class="bg-amber-50 rounded-lg p-4 border-l-4 border-amber-600">
+     <h3 class="font-bold text-amber-900 mb-3">Break-Even Analysis</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="fe-be-area" class="text-xs font-medium text-gray-600">Production Area (Acres)</label><input id="fe-be-area" type="number" step="0.1" value="10" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-be-price" class="text-xs font-medium text-gray-600">Current Price (PKR/Ton)</label><input id="fe-be-price" type="number" value="50000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div>
+    </div>
+    <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-600">
+     <h3 class="font-bold text-purple-900 mb-3">Investment Feasibility</h3>
+     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+      <div><label for="fe-investment" class="text-xs font-medium text-gray-600">Initial Investment (PKR)</label><input id="fe-investment" type="number" value="500000" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-project-life" class="text-xs font-medium text-gray-600">Project Life (Years)</label><input id="fe-project-life" type="number" value="10" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-discount-rate" class="text-xs font-medium text-gray-600">Discount Rate (%)</label><input id="fe-discount-rate" type="number" value="12" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+      <div><label for="fe-residual" class="text-xs font-medium text-gray-600">Residual Value (%)</label><input id="fe-residual" type="number" value="20" class="w-full border rounded-lg px-3 py-2 text-sm">
+      </div>
+     </div>
+    </div><button type="button" onclick="calcCompleteFarmEconomics()" class="px-5 py-2 bg-green-700 text-white rounded-lg text-sm font-medium">Generate Complete Report</button>
+    <div id="complete-econ-report" class="hidden bg-gradient-to-b from-green-50 to-blue-50 rounded-lg p-4 border-2 border-green-600 space-y-4 mt-4"></div>
+   </section><!-- AI Consultant Tab -->
+   <section id="tab-consultant" class="hidden space-y-4">
+    <h2 data-template-id="consultant-title" class="canva-text font-bold mb-4"></h2>
+    <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 shadow-md border-l-4 border-blue-600">
+     <p data-template-id="consultant-desc" class="canva-text text-sm mb-4"></p>
+     <form id="consultant-form" class="space-y-4">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+       <div><label for="cons-issue" class="text-sm font-medium text-gray-700 block mb-2">What's your main issue?</label> <select id="cons-issue" class="w-full border rounded-lg px-3 py-2 text-sm" required> <option value="">Select an issue...</option> <option>Low yield</option> <option>Poor crop growth</option> <option>Water-related problem</option> <option>Soil quality concern</option> <option>Equipment issue</option> <option>Cost/profitability issue</option> <option>Disease or pest problem</option> <option>Other</option> </select>
+       </div>
+       <div><label for="cons-crop" class="text-sm font-medium text-gray-700 block mb-2">Affected crop</label> <select id="cons-crop" class="w-full border rounded-lg px-3 py-2 text-sm"> <option value="">Select crop...</option> <option>Wheat</option> <option>Rice</option> <option>Maize</option> <option>Cotton</option> <option>Sugarcane</option> <option>Potato</option> <option>Tomato</option> <option>Onion</option> <option>Citrus</option> <option>Mango</option> </select>
+       </div>
+      </div>
+      <div><label for="cons-description" class="text-sm font-medium text-gray-700 block mb-2">Describe the issue in detail</label> <textarea id="cons-description" class="w-full border rounded-lg px-3 py-2 text-sm h-24" placeholder="e.g., My wheat yield dropped from 5 tons to 3 tons this season despite normal irrigation..." required></textarea>
+      </div><button type="submit" class="px-5 py-2 bg-blue-600 text-white rounded-lg text-sm font-medium hover:bg-blue-700 w-full">Analyze with AI Consultant</button>
+     </form>
+    </div>
+    <div id="consultant-result" class="hidden bg-white rounded-xl shadow-lg border-2 border-indigo-600 overflow-hidden">
+     <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+      <h3 class="text-xl font-bold text-white flex items-center gap-2"><i data-lucide="zap" class="w-5 h-5"></i> <span>AI Farm Diagnostic Report</span></h3>
+     </div>
+     <div class="p-6 space-y-6">
+      <div class="bg-red-50 rounded-lg p-4 border-l-4 border-red-600">
+       <p class="font-bold text-red-900 mb-3 flex items-center gap-2"><i data-lucide="alert-circle" class="w-5 h-5"></i> Diagnosis</p>
+       <p id="cons-diagnosis" class="text-sm text-gray-700"></p>
+      </div>
+      <div class="bg-blue-50 rounded-lg p-4 border-l-4 border-blue-600">
+       <p class="font-bold text-blue-900 mb-3 flex items-center gap-2"><i data-lucide="lightbulb" class="w-5 h-5"></i> Root Cause Analysis</p>
+       <ul id="cons-analysis" class="text-sm text-gray-700 space-y-2"></ul>
+      </div>
+      <div class="bg-green-50 rounded-lg p-4 border-l-4 border-green-600">
+       <p class="font-bold text-green-900 mb-3 flex items-center gap-2"><i data-lucide="check-circle" class="w-5 h-5"></i> Recommendations</p>
+       <ul id="cons-recommendations" class="text-sm text-gray-700 space-y-2"></ul>
+      </div>
+      <div class="bg-yellow-50 rounded-lg p-4 border-l-4 border-yellow-600">
+       <p class="font-bold text-yellow-900 mb-3 flex items-center gap-2"><i data-lucide="shield-alert" class="w-5 h-5"></i> Risk Assessment</p>
+       <div class="space-y-2 text-sm text-gray-700">
+        <div>
+         <p class="font-semibold">Risk Level: <span id="cons-risk-level" class="text-yellow-700">—</span></p>
+        </div>
+        <div>
+         <p class="font-semibold mb-1">Identified Risks:</p>
+         <ul id="cons-risks" class="space-y-1 ml-2"></ul>
+        </div>
+        <div>
+         <p class="font-semibold mb-1">Mitigation Strategies:</p>
+         <ul id="cons-mitigation" class="space-y-1 ml-2"></ul>
+        </div>
+       </div>
+      </div>
+      <div class="bg-purple-50 rounded-lg p-4 border-l-4 border-purple-600">
+       <p class="font-bold text-purple-900 mb-3 flex items-center gap-2"><i data-lucide="trending-up" class="w-5 h-5"></i> Next Steps</p>
+       <ol id="cons-next-steps" class="text-sm text-gray-700 space-y-2 ml-4"></ol>
+      </div>
+     </div>
+    </div>
+   </section><!-- Reports Tab -->
+   <section id="tab-reports" class="hidden space-y-4">
+    <h2 data-template-id="reports-title" class="canva-text font-bold mb-4"></h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+     <button type="button" onclick="generateFarmAudit()" class="bg-blue-50 border-2 border-blue-600 hover:bg-blue-100 p-4 rounded-lg text-left transition"> <p class="font-bold text-blue-900 mb-1">🏢 Farm Audit Report</p><p class="text-sm text-gray-600">Complete farm profile summary with location, area, soil &amp; water details</p></button> <button type="button" onclick="generateIrrigationReport()" class="bg-cyan-50 border-2 border-cyan-600 hover:bg-cyan-100 p-4 rounded-lg text-left transition"> <p class="font-bold text-cyan-900 mb-1">💧 Irrigation Report</p><p class="text-sm text-gray-600">Water requirements, scheduling intervals, and irrigation method analysis</p></button> <button type="button" onclick="generatePumpReport()" class="bg-purple-50 border-2 border-purple-600 hover:bg-purple-100 p-4 rounded-lg text-left transition"> <p class="font-bold text-purple-900 mb-1">⚙️ Pump Design Report</p><p class="text-sm text-gray-600">Head calculations, power requirements, and recommended pump size</p></button> <button type="button" onclick="generateSolarReport()" class="bg-yellow-50 border-2 border-yellow-600 hover:bg-yellow-100 p-4 rounded-lg text-left transition"> <p class="font-bold text-yellow-900 mb-1">☀️ Solar Feasibility Report</p><p class="text-sm text-gray-600">PV array sizing, system cost, and financial payback analysis</p></button> <button type="button" onclick="generateSoilReport()" class="bg-amber-50 border-2 border-amber-600 hover:bg-amber-100 p-4 rounded-lg text-left transition"> <p class="font-bold text-amber-900 mb-1">🌍 Soil Analysis Report</p><p class="text-sm text-gray-600">Texture classification, physical properties, and soil health assessment</p></button> <button type="button" onclick="generateMachineryReport()" class="bg-red-50 border-2 border-red-600 hover:bg-red-100 p-4 rounded-lg text-left transition"> <p class="font-bold text-red-900 mb-1">🚜 Machinery Report</p><p class="text-sm text-gray-600">Field capacity, operating costs, and machinery economics</p></button> <button type="button" onclick="generateEconomicsReport()" class="bg-green-50 border-2 border-green-600 hover:bg-green-100 p-4 rounded-lg text-left transition"> <p class="font-bold text-green-900 mb-1">💰 Economics Report</p><p class="text-sm text-gray-600">Revenue, costs, margins, break-even analysis, and investment ROI</p></button>
+    </div>
+    <div id="report-output" class="hidden bg-white rounded-lg shadow-lg p-6 border border-gray-300 space-y-4"></div>
+    <div class="flex gap-2 justify-center" id="report-actions">
+     <button type="button" onclick="printReport()" class="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm"> <i data-lucide="printer" class="w-4 h-4"></i> Print </button> <button type="button" onclick="exportPDF()" class="flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 text-sm"> <i data-lucide="file-pdf" class="w-4 h-4"></i> PDF </button> <button type="button" onclick="closeReport()" class="flex items-center gap-2 px-4 py-2 bg-gray-400 text-white rounded-lg hover:bg-gray-500 text-sm"> <i data-lucide="x" class="w-4 h-4"></i> Close </button>
+    </div>
+   </section>
+  </main>
+  <script src="/_sdk/e063511df281944a.editing_sdk.js" integrity="sha512-Xa8p4aPfoMxVnzxQE2WAG0FfoaPLxdjOJMfUZGm1yZosJTYmnNDvgLkJ2EoN0i3zxjeQVAzUMSXNvTKQVqbXyQ=="></script>
+  <script src="/_sdk/0179d719c431a79e.data_sdk.js" integrity="sha512-OsRvJkI5GkC3MJQcgotQYotpzrMSX415GiKKgvYdxQEEkzD/fdchShO2FMSy0PJr/tiINMXOk5Vl2zAgg6bUiA=="></script>
+  <script>
+    // Crop Database
+    const cropDatabase = [
+      { name: 'Wheat', kc_init: 0.3, kc_mid: 1.15, kc_end: 0.4, root_depth: 60, seasonal_water: 450, yield: '5–6 t/ha' },
+      { name: 'Rice', kc_init: 1.1, kc_mid: 1.15, kc_end: 0.9, root_depth: 50, seasonal_water: 1200, yield: '5–7 t/ha' },
+      { name: 'Maize', kc_init: 0.3, kc_mid: 1.2, kc_end: 0.5, root_depth: 60, seasonal_water: 500, yield: '8–10 t/ha' },
+      { name: 'Cotton', kc_init: 0.4, kc_mid: 1.15, kc_end: 0.7, root_depth: 120, seasonal_water: 700, yield: '2.5–3.5 t/ha' },
+      { name: 'Sugarcane', kc_init: 0.4, kc_mid: 1.3, kc_end: 0.6, root_depth: 120, seasonal_water: 1500, yield: '60–80 t/ha' },
+      { name: 'Potato', kc_init: 0.5, kc_mid: 1.15, kc_end: 0.7, root_depth: 60, seasonal_water: 400, yield: '25–35 t/ha' },
+      { name: 'Tomato', kc_init: 0.4, kc_mid: 1.15, kc_end: 0.8, root_depth: 60, seasonal_water: 450, yield: '40–60 t/ha' },
+      { name: 'Onion', kc_init: 0.5, kc_mid: 0.95, kc_end: 0.75, root_depth: 40, seasonal_water: 350, yield: '30–40 t/ha' },
+      { name: 'Chili', kc_init: 0.4, kc_mid: 1.0, kc_end: 0.8, root_depth: 70, seasonal_water: 500, yield: '15–25 t/ha' },
+      { name: 'Sunflower', kc_init: 0.35, kc_mid: 1.15, kc_end: 0.55, root_depth: 120, seasonal_water: 600, yield: '2.5–3.5 t/ha' },
+      { name: 'Mustard', kc_init: 0.3, kc_mid: 1.1, kc_end: 0.4, root_depth: 60, seasonal_water: 450, yield: '2.0–2.5 t/ha' },
+      { name: 'Barley', kc_init: 0.3, kc_mid: 1.15, kc_end: 0.4, root_depth: 60, seasonal_water: 420, yield: '3.5–5.0 t/ha' },
+      { name: 'Sorghum', kc_init: 0.2, kc_mid: 1.0, kc_end: 0.6, root_depth: 100, seasonal_water: 400, yield: '3–5 t/ha' },
+      { name: 'Millet', kc_init: 0.3, kc_mid: 1.0, kc_end: 0.6, root_depth: 60, seasonal_water: 350, yield: '1.5–2.5 t/ha' },
+      { name: 'Chickpea', kc_init: 0.4, kc_mid: 1.05, kc_end: 0.4, root_depth: 100, seasonal_water: 400, yield: '2.0–2.5 t/ha' },
+      { name: 'Lentil', kc_init: 0.4, kc_mid: 1.0, kc_end: 0.35, root_depth: 80, seasonal_water: 350, yield: '1.5–2.0 t/ha' },
+      { name: 'Peanut', kc_init: 0.5, kc_mid: 1.1, kc_end: 0.6, root_depth: 60, seasonal_water: 500, yield: '3–4 t/ha' },
+      { name: 'Soybean', kc_init: 0.4, kc_mid: 1.15, kc_end: 0.5, root_depth: 70, seasonal_water: 450, yield: '2.5–3.5 t/ha' },
+      { name: 'Okra', kc_init: 0.4, kc_mid: 1.0, kc_end: 0.8, root_depth: 80, seasonal_water: 600, yield: '10–15 t/ha' },
+      { name: 'Cucumber', kc_init: 0.5, kc_mid: 1.0, kc_end: 0.75, root_depth: 50, seasonal_water: 550, yield: '20–30 t/ha' },
+      { name: 'Pumpkin', kc_init: 0.5, kc_mid: 0.95, kc_end: 0.7, root_depth: 100, seasonal_water: 600, yield: '25–35 t/ha' },
+      { name: 'Mango', kc_init: 0.6, kc_mid: 0.9, kc_end: 0.7, root_depth: 150, seasonal_water: 1000, yield: '15–25 t/ha' },
+      { name: 'Citrus', kc_init: 0.65, kc_mid: 0.8, kc_end: 0.75, root_depth: 120, seasonal_water: 900, yield: '30–50 t/ha' },
+      { name: 'Banana', kc_init: 0.9, kc_mid: 1.1, kc_end: 1.0, root_depth: 80, seasonal_water: 1200, yield: '30–40 t/ha' },
+      { name: 'Guava', kc_init: 0.5, kc_mid: 0.8, kc_end: 0.6, root_depth: 100, seasonal_water: 800, yield: '15–25 t/ha' },
+      { name: 'Date Palm', kc_init: 0.7, kc_mid: 0.9, kc_end: 0.75, root_depth: 180, seasonal_water: 1100, yield: '80–120 kg/tree' },
+      { name: 'Alfalfa', kc_init: 0.4, kc_mid: 1.15, kc_end: 0.5, root_depth: 120, seasonal_water: 700, yield: '10–15 t/ha' },
+      { name: 'Tobacco', kc_init: 0.3, kc_mid: 1.0, kc_end: 0.5, root_depth: 100, seasonal_water: 550, yield: '2.5–3.5 t/ha' }
+    ];
+
+    let allData = [];
+
+    // Tabs
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('tab-active'));
+        btn.classList.add('tab-active');
+        document.querySelectorAll('[id^="tab-"]').forEach(s => s.classList.add('hidden'));
+        document.getElementById('tab-' + btn.dataset.tab).classList.remove('hidden');
+        if (btn.dataset.tab === 'crops') renderCrops();
+      });
+    });
+
+    function renderCrops() {
+      const grid = document.getElementById('crops-grid');
+      const query = document.getElementById('crop-search').value.toLowerCase();
+      const filtered = cropDatabase.filter(c => c.name.toLowerCase().includes(query));
+      grid.innerHTML = filtered.map(crop => `
+        <button class="crop-card p-3 bg-white border-2 border-gray-200 rounded-lg hover:border-green-600 hover:bg-green-50 text-left transition cursor-pointer" data-crop="${crop.name}">
+          <p class="font-semibold text-green-900">${crop.name}</p>
+          <p class="text-xs text-gray-600 mt-1">Kc: ${crop.kc_init}–${crop.kc_mid}–${crop.kc_end}</p>
+        </button>
+      `).join('');
+      document.querySelectorAll('.crop-card').forEach(btn => {
+        btn.addEventListener('click', () => showCropDetail(cropDatabase.find(c => c.name === btn.dataset.crop)));
+      });
+    }
+
+    function showCropDetail(crop) {
+      document.getElementById('crop-name').textContent = crop.name;
+      document.getElementById('crop-kc-init').textContent = crop.kc_init;
+      document.getElementById('crop-kc-mid').textContent = crop.kc_mid;
+      document.getElementById('crop-kc-end').textContent = crop.kc_end;
+      document.getElementById('crop-root').textContent = crop.root_depth;
+      document.getElementById('crop-water').textContent = crop.seasonal_water;
+      document.getElementById('crop-yield').textContent = crop.yield;
+      document.getElementById('crop-detail').classList.remove('hidden');
+    }
+
+    document.getElementById('crop-search').addEventListener('input', renderCrops);
+
+    // Form toggle
+    document.getElementById('toggle-form-btn').addEventListener('click', () => {
+      document.getElementById('farm-form').classList.toggle('hidden');
+    });
+    document.getElementById('cancel-form').addEventListener('click', () => {
+      document.getElementById('farm-form').classList.add('hidden');
+      document.getElementById('farm-form').reset();
+    });
+
+    // Form submit
+    document.getElementById('farm-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (allData.length >= 999) { showStatus('Maximum 999 profiles reached.', true); return; }
+      const btn = e.target.querySelector('[type="submit"]');
+      btn.disabled = true; btn.textContent = 'Saving...';
+      const record = {
+        farm_name: document.getElementById('farm_name').value,
+        client_name: document.getElementById('client_name').value,
+        contact: document.getElementById('contact').value,
+        gps_location: document.getElementById('gps_location').value,
+        province: document.getElementById('province').value,
+        district: document.getElementById('district').value,
+        area_acres: parseFloat(document.getElementById('area_acres').value) || 0,
+        soil_type: document.getElementById('soil_type').value,
+        water_source: document.getElementById('water_source').value,
+        irrigation_method: document.getElementById('irrigation_method').value,
+        main_crop: document.getElementById('main_crop').value,
+        created_at: new Date().toISOString()
+      };
+      const result = await window.dataSdk.create(record);
+      btn.disabled = false; btn.textContent = 'Save Profile';
+      if (result.isOk) { e.target.reset(); document.getElementById('farm-form').classList.add('hidden'); showStatus('Profile saved!', false); }
+      else { showStatus('Error saving profile.', true); }
+    });
+
+    function showStatus(msg, isError) {
+      const el = document.getElementById('form-status');
+      el.textContent = msg;
+      el.className = 'text-sm p-2 rounded ' + (isError ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700');
+      el.classList.remove('hidden');
+      setTimeout(() => el.classList.add('hidden'), 3000);
+    }
+
+    // Search and filter
+    document.getElementById('search-input').addEventListener('input', renderFiltered);
+    document.getElementById('filter-province').addEventListener('change', renderFiltered);
+    document.getElementById('filter-irrigation').addEventListener('change', renderFiltered);
+
+    function getFilteredData() {
+      const q = document.getElementById('search-input').value.toLowerCase();
+      const prov = document.getElementById('filter-province').value;
+      const irr = document.getElementById('filter-irrigation').value;
+      return allData.filter(item => {
+        if (q && !(item.farm_name || '').toLowerCase().includes(q) && !(item.client_name || '').toLowerCase().includes(q)) return false;
+        if (prov && item.province !== prov) return false;
+        if (irr && item.irrigation_method !== irr) return false;
+        return true;
+      });
+    }
+
+    function renderFiltered() { renderProfiles(getFilteredData()); }
+
+    function updateDashboard() {
+      document.getElementById('dash-total').textContent = allData.length;
+      document.getElementById('dash-area').textContent = allData.reduce((s, i) => s + (parseFloat(i.area_acres) || 0), 0).toFixed(0);
+      document.getElementById('dash-drip').textContent = allData.filter(i => i.irrigation_method === 'Drip').length;
+      document.getElementById('dash-sprinkler').textContent = allData.filter(i => i.irrigation_method === 'Sprinkler').length;
+    }
+
+    function renderProfiles(data) {
+      const list = document.getElementById('profiles-list');
+      const empty = document.getElementById('empty-profiles');
+      if (data.length === 0) { empty.classList.remove('hidden'); list.innerHTML = ''; return; }
+      empty.classList.add('hidden');
+      const existing = new Map([...list.children].map(el => [el.dataset.id, el]));
+      const newIds = new Set(data.map(i => i.__backendId));
+      existing.forEach((el, id) => { if (!newIds.has(id)) el.remove(); });
+      data.forEach(item => {
+        if (existing.has(item.__backendId)) {
+          const card = existing.get(item.__backendId);
+          card.querySelector('.farm-info').innerHTML = buildFarmInfo(item);
+        } else {
+          const card = document.createElement('div');
+          card.dataset.id = item.__backendId;
+          card.className = 'bg-white rounded-lg p-4 shadow-sm border-l-4 border-green-600 flex justify-between items-start';
+          card.innerHTML = `<div class="farm-info">${buildFarmInfo(item)}</div><button class="del-btn text-red-500 hover:text-red-700 p-1" title="Delete"><i data-lucide="trash-2" class="w-4 h-4"></i></button>`;
+          card.querySelector('.del-btn').addEventListener('click', async () => {
+            card.style.opacity = '0.5';
+            const r = await window.dataSdk.delete(item);
+            if (!r.isOk) { card.style.opacity = '1'; showStatus('Delete failed', true); }
+          });
+          list.appendChild(card);
+        }
+      });
+      lucide.createIcons();
+    }
+
+    function buildFarmInfo(item) {
+      return `<h3 class="font-bold text-gray-900">${esc(item.farm_name)}</h3><p class="text-sm text-gray-600">${esc(item.client_name)} • ${esc(item.district)}, ${esc(item.province)}</p><p class="text-xs text-gray-500 mt-1">${esc(item.area_acres)} acres • ${esc(item.soil_type)} • ${esc(item.irrigation_method)} • ${esc(item.main_crop)}</p>${item.gps_location ? `<p class="text-xs text-gray-400 mt-0.5">📍 ${esc(item.gps_location)}</p>` : ''}`;
+    }
+
+    function esc(s) { const d = document.createElement('div'); d.textContent = s || ''; return d.innerHTML; }
+
+    // === CALCULATORS ===
+
+    function calcET0() {
+      const tMax = parseFloat(document.getElementById('w-temp-max').value);
+      const tMin = parseFloat(document.getElementById('w-temp-min').value);
+      const rh = parseFloat(document.getElementById('w-humidity').value);
+      const u2 = parseFloat(document.getElementById('w-wind').value);
+      const Rs = parseFloat(document.getElementById('w-radiation').value);
+      const alt = parseFloat(document.getElementById('w-altitude').value);
+      if (isNaN(tMax) || isNaN(tMin) || isNaN(u2) || isNaN(Rs)) return;
+
+      const Tavg = (tMax + tMin) / 2;
+      const P = 101.3 * Math.pow((293 - 0.0065 * alt) / 293, 5.26);
+      const gamma = 0.000665 * P;
+
+      const esat_max = 0.6108 * Math.exp((17.27 * tMax) / (tMax + 237.3));
+      const esat_min = 0.6108 * Math.exp((17.27 * tMin) / (tMin + 237.3));
+      const es = (esat_max + esat_min) / 2;
+      const ea = (rh / 100) * es;
+
+      const delta = (4098 * 0.6108 * Math.exp((17.27 * Tavg) / (Tavg + 237.3))) / Math.pow(Tavg + 237.3, 2);
+
+      const Rso = (0.75 + 2e-5 * alt) * 37.6;
+      const Rns = 0.77 * Rs;
+      const sigma = 4.903e-9;
+      const Rnl = sigma * ((Math.pow(tMax + 273.16, 4) + Math.pow(tMin + 273.16, 4)) / 2) * (0.34 - 0.14 * Math.sqrt(ea)) * (1.35 * (Rs / Rso) - 0.35);
+      const Rn = Rns - Rnl;
+      const G = 0;
+
+      const cn = 900;
+      const cd = 0.34;
+      const num = 0.408 * delta * (Rn - G) + gamma * (cn / (Tavg + 273)) * u2 * (es - ea);
+      const den = delta + gamma * (1 + cd * u2);
+      const ET0 = Math.max(0.1, num / den);
+
+      const el = document.getElementById('et0-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-blue-800 mb-2">FAO-56 Penman-Monteith Results:</p><p class="text-sm"><strong>ET₀ = ${ET0.toFixed(2)} mm/day</strong></p>`;
+      document.getElementById('w-eto-input').value = ET0.toFixed(2);
+    }
+
+    function calcWater() {
+      const area = parseFloat(document.getElementById('w-area').value);
+      const eto = parseFloat(document.getElementById('w-eto-input').value);
+      const kc = parseFloat(document.getElementById('w-kc').value);
+      const eff = parseFloat(document.getElementById('w-eff').value) / 100;
+      const rain = parseFloat(document.getElementById('w-rain').value) || 0;
+      const days = parseFloat(document.getElementById('w-days').value);
+      if (!area || !eto || !kc || !eff || !days) return;
+
+      const areaM2 = area * 4046.86;
+      const ETc_daily = eto * kc;
+      const netDaily = Math.max(0, ETc_daily - rain);
+      const grossDaily = netDaily / eff;
+      const volDaily_m3 = (grossDaily / 1000) * areaM2;
+      const grossWeekly = netDaily * 7 / eff;
+      const volWeekly_m3 = (grossWeekly / 1000) * areaM2;
+      const grossSeason = netDaily * days / eff;
+      const volSeason_m3 = (grossSeason / 1000) * areaM2;
+
+      const el = document.getElementById('water-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `
+        <div class="space-y-3">
+          <p class="font-bold text-green-800">Daily:</p>
+          <p class="text-sm">ETc: <strong>${ETc_daily.toFixed(2)} mm/day</strong> | Net: <strong>${netDaily.toFixed(2)} mm</strong> | Gross: <strong>${grossDaily.toFixed(2)} mm</strong> | Volume: <strong>${volDaily_m3.toFixed(1)} m³</strong></p>
+          <p class="font-bold text-green-800">Weekly:</p>
+          <p class="text-sm">Gross: <strong>${grossWeekly.toFixed(2)} mm</strong> | Volume: <strong>${volWeekly_m3.toFixed(1)} m³</strong></p>
+          <p class="font-bold text-green-800">Seasonal (${days} days):</p>
+          <p class="text-sm">Gross: <strong>${grossSeason.toFixed(1)} mm</strong> | Volume: <strong>${volSeason_m3.toFixed(0)} m³</strong></p>
+        </div>`;
+    }
+
+    function calcIrrigation() {
+      const root = parseFloat(document.getElementById('i-root').value);
+      const fc = parseFloat(document.getElementById('i-fc').value) / 100;
+      const pwp = parseFloat(document.getElementById('i-pwp').value) / 100;
+      const mad = parseFloat(document.getElementById('i-mad').value) / 100;
+      const etc = parseFloat(document.getElementById('i-eto').value);
+      if (!root || !fc || !pwp || !mad || !etc) return;
+      const taw = (fc - pwp) * root * 10;
+      const raw = taw * mad;
+      const interval = raw / etc;
+      const el = document.getElementById('irr-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-green-800">Results:</p><p class="text-sm">TAW: <strong>${taw.toFixed(1)} mm</strong></p><p class="text-sm">RAW: <strong>${raw.toFixed(1)} mm</strong></p><p class="text-sm">Irrigation Interval: <strong>${interval.toFixed(1)} days</strong></p><p class="text-sm">Net Application Depth: <strong>${raw.toFixed(1)} mm</strong></p>`;
+    }
+
+    function calcLeveling() {
+      const l = parseFloat(document.getElementById('l-length').value);
+      const w = parseFloat(document.getElementById('l-width').value);
+      const high = parseFloat(document.getElementById('l-high').value);
+      const low = parseFloat(document.getElementById('l-low').value);
+      const avg = parseFloat(document.getElementById('l-avg').value);
+      if (!l || !w) return;
+      const area = l * w;
+      const cutVol = ((high - avg) / 2) * area;
+      const fillVol = ((avg - low) / 2) * area;
+      const el = document.getElementById('level-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-green-800">Results:</p><p class="text-sm">Field Area: <strong>${area.toFixed(0)} m²</strong></p><p class="text-sm">Cut Volume: <strong>${cutVol.toFixed(1)} m³</strong></p><p class="text-sm">Fill Volume: <strong>${fillVol.toFixed(1)} m³</strong></p><p class="text-sm">Elevation Diff: <strong>${(high-low).toFixed(2)} m</strong></p>`;
+    }
+
+    function calcPump() {
+      const Q = parseFloat(document.getElementById('p-discharge').value);
+      const staticH = parseFloat(document.getElementById('p-static').value);
+      const friction = parseFloat(document.getElementById('p-friction').value);
+      const delivery = parseFloat(document.getElementById('p-delivery').value);
+      const pEff = parseFloat(document.getElementById('p-peff').value) / 100;
+      const mEff = parseFloat(document.getElementById('p-meff').value) / 100;
+      if (!Q || !pEff || !mEff) return;
+
+      const tdh = staticH + friction + delivery;
+      const whp = (Q * tdh * 9.81) / 1000;
+      const bhp = whp / pEff;
+      const motorKW = bhp / mEff;
+      const motorHP = motorKW * 1.341;
+      const pumpHP = (Q * tdh) / (75 * pEff);
+
+      const standardSizes = [0.5, 0.75, 1, 1.5, 2, 3, 5, 7.5, 10, 15, 20, 25, 30, 40, 50];
+      const recommendedPump = standardSizes.find(s => s >= pumpHP) || 50;
+      const standardMotorSizes = [0.5, 0.75, 1, 1.5, 2, 3, 5, 7.5, 10, 15, 20, 25, 30, 40, 50, 60, 75];
+      const recommendedMotor = standardMotorSizes.find(s => s >= motorHP) || 75;
+
+      const el = document.getElementById('pump-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `
+        <div class="space-y-3">
+          <p class="font-bold text-green-800">Head:</p>
+          <p class="text-sm">TDH: <strong>${tdh.toFixed(1)} m</strong> (Static ${staticH} + Friction ${friction} + Delivery ${delivery})</p>
+          <p class="font-bold text-green-800">Power:</p>
+          <p class="text-sm">Water Power: <strong>${whp.toFixed(2)} kW</strong> | Brake: <strong>${bhp.toFixed(2)} kW</strong></p>
+          <p class="text-sm">Pump HP: <strong>${pumpHP.toFixed(2)} HP</strong> | Motor: <strong>${motorKW.toFixed(2)} kW (${motorHP.toFixed(1)} HP)</strong></p>
+          <p class="font-bold text-green-800">Recommended:</p>
+          <p class="text-sm">Pump: <strong>${recommendedPump} HP</strong> | Motor: <strong>${recommendedMotor} HP</strong></p>
+        </div>`;
+    }
+
+    function calcSolar() {
+      const water = parseFloat(document.getElementById('s-water').value);
+      const tdh = parseFloat(document.getElementById('s-tdh').value);
+      const psh = parseFloat(document.getElementById('s-psh').value);
+      const eff = parseFloat(document.getElementById('s-peff').value) / 100;
+      const panelW = parseFloat(document.getElementById('s-panel').value);
+      if (!water || !tdh || !psh || !eff || !panelW) return;
+
+      const hydraulicKWh = (water * 1000 * 9.81 * tdh) / 3600000;
+      const requiredKWh = hydraulicKWh / eff;
+      const arrayKW = requiredKWh / psh;
+      const numPanels = Math.ceil((arrayKW * 1000) / panelW);
+      const annualKWh = requiredKWh * 365;
+      const annualSavings = annualKWh * 0.5 * 290;
+      const totalSystemCost = arrayKW * 180000;
+      const paybackYears = totalSystemCost / annualSavings;
+
+      const el = document.getElementById('solar-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `
+        <div class="space-y-3">
+          <p class="font-bold text-green-800">System Design:</p>
+          <p class="text-sm">Hydraulic Energy: <strong>${hydraulicKWh.toFixed(2)} kWh/day</strong> | Required: <strong>${requiredKWh.toFixed(2)} kWh/day</strong></p>
+          <p class="text-sm">Array: <strong>${arrayKW.toFixed(2)} kWp</strong> | Panels (${panelW}W): <strong>${numPanels}</strong></p>
+          <p class="font-bold text-green-800">Financial:</p>
+          <p class="text-sm">Est. Cost: <strong>PKR ${totalSystemCost.toLocaleString()}</strong> | Annual Savings: <strong>PKR ${annualSavings.toLocaleString('en-PK',{maximumFractionDigits:0})}</strong></p>
+          <p class="text-sm">Payback: <strong>${paybackYears.toFixed(1)} years</strong></p>
+        </div>`;
+    }
+
+    function calcDrip() {
+      const area = parseFloat(document.getElementById('d-area').value);
+      const rowSpacing = parseFloat(document.getElementById('d-spacing-row').value);
+      const emitterSpacing = parseFloat(document.getElementById('d-spacing-emitter').value);
+      const emitterRate = parseFloat(document.getElementById('d-emitter-rate').value);
+      const dailyNeed = parseFloat(document.getElementById('d-daily').value);
+      if (!area || !rowSpacing || !emitterSpacing || !emitterRate || !dailyNeed) return;
+      const areaM2 = area * 4046.86;
+      const totalEmitters = Math.ceil(areaM2 / (rowSpacing * emitterSpacing));
+      const systemFlow = (totalEmitters * emitterRate) / 1000;
+      const dailyVolume = (dailyNeed / 1000) * areaM2;
+      const runTime = dailyVolume / systemFlow;
+      const el = document.getElementById('drip-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-green-800">Results:</p><p class="text-sm">Total Emitters: <strong>${totalEmitters.toLocaleString()}</strong></p><p class="text-sm">System Flow: <strong>${systemFlow.toFixed(1)} m³/hr</strong></p><p class="text-sm">Daily Volume: <strong>${dailyVolume.toFixed(1)} m³</strong></p><p class="text-sm">Run Time: <strong>${runTime.toFixed(1)} hrs/day</strong></p>`;
+    }
+
+    function designDripSystem() {
+      const crop = document.getElementById('dd-crop').value;
+      const plantSpacing = parseFloat(document.getElementById('dd-plant-spacing').value);
+      const rowSpacing = parseFloat(document.getElementById('dd-row-spacing').value);
+      const emitterFlow = parseFloat(document.getElementById('dd-emitter-flow').value);
+      const fieldLength = parseFloat(document.getElementById('dd-field-length').value);
+      const fieldWidth = parseFloat(document.getElementById('dd-field-width').value);
+      const lateralDia = parseFloat(document.getElementById('dd-lateral-diameter').value);
+      const submainDia = parseFloat(document.getElementById('dd-submain-diameter').value);
+      const mainlineDia = parseFloat(document.getElementById('dd-mainline-diameter').value);
+      const operatingHours = parseFloat(document.getElementById('dd-operating-hours').value);
+      if (!crop || !plantSpacing || !rowSpacing || !emitterFlow || !fieldLength || !fieldWidth || !operatingHours) return;
+
+      const fieldArea = fieldLength * fieldWidth;
+      const numRows = Math.ceil(fieldWidth / rowSpacing);
+      const emittersPerRow = Math.ceil(fieldLength / plantSpacing);
+      const totalEmitters = numRows * emittersPerRow;
+      const lateralFlowLhr = emittersPerRow * emitterFlow;
+      const mainlineFlowLhr = numRows * lateralFlowLhr;
+      const mainlineFlowLs = mainlineFlowLhr / 3600;
+      const totalDailyVolume = (totalEmitters * emitterFlow * operatingHours) / 1000;
+      const dailyDepth = (totalDailyVolume / fieldArea) * 1000;
+
+      const lateralArea = Math.PI * Math.pow(lateralDia / 2000, 2);
+      const lateralVelocity = (lateralFlowLhr / 3600 / 1000) / lateralArea;
+      const mainlineArea = Math.PI * Math.pow(mainlineDia / 2000, 2);
+      const mainlineVelocity = (mainlineFlowLhr / 3600 / 1000) / mainlineArea;
+
+      const el = document.getElementById('drip-design-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `
+        <div class="space-y-3">
+          <p class="font-bold text-blue-900">Drip Design: ${crop}</p>
+          <p class="text-sm">Field: <strong>${fieldLength}×${fieldWidth} m</strong> (${(fieldArea/4046.86).toFixed(2)} acres)</p>
+          <p class="text-sm">Rows: <strong>${numRows}</strong> | Emitters/Row: <strong>${emittersPerRow}</strong> | Total: <strong>${totalEmitters.toLocaleString()}</strong></p>
+          <p class="text-sm">Lateral Flow: <strong>${lateralFlowLhr.toFixed(0)} L/hr</strong> | System Flow: <strong>${mainlineFlowLhr.toFixed(0)} L/hr</strong> (${mainlineFlowLs.toFixed(2)} L/s)</p>
+          <p class="text-sm">Lateral Velocity: <strong>${lateralVelocity.toFixed(2)} m/s</strong> ${lateralVelocity > 2 ? '⚠️' : '✓'} | Mainline: <strong>${mainlineVelocity.toFixed(2)} m/s</strong> ${mainlineVelocity > 2.5 ? '⚠️' : '✓'}</p>
+          <p class="text-sm">Daily Volume: <strong>${totalDailyVolume.toFixed(1)} m³</strong> | Depth: <strong>${dailyDepth.toFixed(1)} mm</strong></p>
+          <p class="text-sm">Material: Lateral ${(numRows*fieldLength).toFixed(0)}m (${lateralDia}mm) | Mainline ${fieldLength}m (${mainlineDia}mm)</p>
+        </div>`;
+    }
+
+    function designSprinklerSystem() {
+      const area = parseFloat(document.getElementById('sp-design-area').value);
+      const dailyNeed = parseFloat(document.getElementById('sp-design-daily-need').value);
+      const operatingHrs = parseFloat(document.getElementById('sp-design-operating-hrs').value);
+      const sprinklerType = document.getElementById('sp-design-sprinkler-type').value;
+      const spacing = parseFloat(document.getElementById('sp-design-spacing').value);
+      const pressure = parseFloat(document.getElementById('sp-design-pressure').value);
+      const throwRadius = parseFloat(document.getElementById('sp-design-throw-radius').value);
+      const cuTarget = parseFloat(document.getElementById('sp-design-cu-target').value);
+      if (!area || !dailyNeed || !operatingHrs || !spacing || !pressure || !throwRadius) return;
+
+      const areaM2 = area * 4046.86;
+      const totalDailyVolume = (dailyNeed / 1000) * areaM2;
+      const systemFlowLhr = (totalDailyVolume / operatingHrs) * 1000;
+      const systemFlowLs = systemFlowLhr / 3600;
+      const numSprinklers = Math.ceil(areaM2 / (spacing * spacing));
+      const sprinklerFlowLhr = systemFlowLhr / numSprinklers;
+      const applicationRate = (sprinklerFlowLhr / (spacing * spacing));
+
+      let cu = 85;
+      if (spacing / throwRadius > 0.5) cu = 75;
+      if (spacing / throwRadius < 0.3) cu = 88;
+
+      const el = document.getElementById('sprinkler-design-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `
+        <div class="space-y-3">
+          <p class="font-bold text-orange-900">Sprinkler Design Report</p>
+          <p class="text-sm">Area: <strong>${area} acres</strong> | Daily Need: <strong>${totalDailyVolume.toFixed(1)} m³</strong></p>
+          <p class="text-sm">Sprinklers: <strong>${numSprinklers}</strong> (${sprinklerType}) @ <strong>${spacing}m spacing</strong></p>
+          <p class="text-sm">System Flow: <strong>${systemFlowLhr.toFixed(0)} L/hr</strong> (${systemFlowLs.toFixed(2)} L/s)</p>
+          <p class="text-sm">Per Sprinkler: <strong>${sprinklerFlowLhr.toFixed(0)} L/hr</strong> | App Rate: <strong>${applicationRate.toFixed(2)} mm/hr</strong></p>
+          <p class="text-sm">CU: <strong>${cu}%</strong> ${cu >= cuTarget ? '✓ Meets target' : '⚠️ Below target'} | Pressure: <strong>${pressure} bar</strong></p>
+        </div>`;
+    }
+
+    function recommendPipeDiameter() {
+      const Q = parseFloat(document.getElementById('pp-rec-flow').value) / 1000;
+      const V_design = parseFloat(document.getElementById('pp-rec-velocity').value);
+      if (!Q || !V_design) return;
+      const A_required = Q / V_design;
+      const D_mm = Math.sqrt((4 * A_required) / Math.PI) * 1000;
+      const standardSizes = [10, 15, 20, 25, 32, 40, 50, 63, 75, 90, 100, 125, 150, 200, 250, 300, 350, 400, 450, 500, 600];
+      const recommendedSize = standardSizes.find(s => s >= D_mm) || 600;
+      const A_actual = Math.PI * Math.pow(recommendedSize / 2000, 2);
+      const V_actual = Q / A_actual;
+      const el = document.getElementById('pipe-rec-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-purple-800">Recommended: <strong>${recommendedSize} mm</strong></p><p class="text-sm">Required: ${D_mm.toFixed(1)} mm | Actual Velocity: ${V_actual.toFixed(2)} m/s ${V_actual > 2.5 ? '⚠️' : '✓'}</p>`;
+    }
+
+    function calcHazenWilliams() {
+      const Q = parseFloat(document.getElementById('pp-hw-flow').value) / 1000;
+      const D = parseFloat(document.getElementById('pp-hw-dia').value) / 1000;
+      const L = parseFloat(document.getElementById('pp-hw-length').value);
+      const C = parseFloat(document.getElementById('pp-hw-c').value);
+      if (!Q || !D || !L || !C) return;
+      const A = Math.PI * Math.pow(D / 2, 2);
+      const V = Q / A;
+      const hf = (10.67 * L * Math.pow(Q, 1.852)) / (Math.pow(C, 1.852) * Math.pow(D, 4.87));
+      const el = document.getElementById('pipe-hw-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-blue-800">Results:</p><p class="text-sm">Velocity: <strong>${V.toFixed(2)} m/s</strong> ${V > 2.5 ? '⚠️ High' : V < 0.5 ? '⚠️ Low' : '✓'}</p><p class="text-sm">Head Loss: <strong>${hf.toFixed(2)} m</strong> | Per 100m: <strong>${((hf/L)*100).toFixed(2)} m</strong></p>`;
+    }
+
+    function calcDarcyWeisbach() {
+      const Q = parseFloat(document.getElementById('pp-dw-flow').value) / 1000;
+      const D = parseFloat(document.getElementById('pp-dw-dia').value) / 1000;
+      const L = parseFloat(document.getElementById('pp-dw-length').value);
+      const ks = parseFloat(document.getElementById('pp-dw-roughness').value) / 1000;
+      if (!Q || !D || !L) return;
+      const A = Math.PI * Math.pow(D / 2, 2);
+      const V = Q / A;
+      const nu = 1e-6;
+      const Re = (V * D) / nu;
+      const f = 0.25 / Math.pow(Math.log10((ks / D) / 3.7 + 5.74 / Math.pow(Re, 0.9)), 2);
+      const hf = f * (L / D) * (Math.pow(V, 2) / (2 * 9.81));
+      const el = document.getElementById('pipe-dw-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-cyan-800">Results:</p><p class="text-sm">Velocity: <strong>${V.toFixed(2)} m/s</strong> | Re: <strong>${Re.toLocaleString()}</strong> (${Re < 2300 ? 'Laminar' : 'Turbulent'})</p><p class="text-sm">f: <strong>${f.toFixed(4)}</strong> | Head Loss: <strong>${hf.toFixed(2)} m</strong></p>`;
+    }
+
+    // Soil Analysis
+    let soilTextureCache = null;
+    let bulkDensityCache = null;
+    let salinityCache = null;
+
+    function calcSoil() {
+      const sand = parseFloat(document.getElementById('so-sand').value);
+      const silt = parseFloat(document.getElementById('so-silt').value);
+      const clay = parseFloat(document.getElementById('so-clay').value);
+      const om = parseFloat(document.getElementById('so-om').value);
+      if (Math.abs(sand + silt + clay - 100) > 1) {
+        const el = document.getElementById('soil-result');
+        el.classList.remove('hidden');
+        el.innerHTML = `<p class="text-red-700 font-bold">Sand + Silt + Clay must equal 100%</p>`;
+        return;
+      }
+      let texture = 'Loam';
+      if (clay >= 40) texture = 'Clay';
+      else if (sand >= 85) texture = 'Sand';
+      else if (silt >= 80) texture = 'Silt';
+      else if (clay >= 27 && sand >= 20 && sand <= 45) texture = 'Clay Loam';
+      else if (sand >= 52 && clay < 20) texture = 'Sandy Loam';
+      else if (silt >= 50 && clay >= 12 && clay < 27) texture = 'Silty Clay Loam';
+      else if (silt >= 50) texture = 'Silt Loam';
+
+      const awc = texture === 'Sand' ? 0.06 : texture === 'Clay' ? 0.14 : 0.17;
+      soilTextureCache = { texture, sand, silt, clay, om, awc };
+
+      const el = document.getElementById('soil-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-green-800">Results:</p><p class="text-sm">Texture: <strong>${texture}</strong></p><p class="text-sm">AWC: <strong>${(awc*100).toFixed(0)}%</strong></p><p class="text-sm">OM: <strong>${om}%</strong> ${om < 1.5 ? '⚠️ Low' : om > 3 ? '✓ Good' : '— Moderate'}</p>`;
+      generateSoilHealthReport();
+    }
+
+    function calcBulkDensity() {
+      const dryWeight = parseFloat(document.getElementById('so-dry-weight').value);
+      const coreVolume = parseFloat(document.getElementById('so-core-volume').value);
+      const particleDensity = parseFloat(document.getElementById('so-particle-density').value);
+      const infiltrationObs = parseFloat(document.getElementById('so-infiltration-obs').value);
+      if (!dryWeight || !coreVolume || !particleDensity || isNaN(infiltrationObs)) return;
+
+      const bd = dryWeight / coreVolume;
+      const porosity = (1 - bd / particleDensity) * 100;
+      const airPorosity = porosity * 0.5;
+
+      let infStatus = '';
+      if (infiltrationObs > 25) infStatus = '✓ Rapid';
+      else if (infiltrationObs > 12) infStatus = '✓ Moderate';
+      else if (infiltrationObs > 6) infStatus = '⚠️ Moderately slow';
+      else infStatus = '⚠️ Slow';
+
+      let permClass = '';
+      if (infiltrationObs > 50) permClass = 'Very rapid';
+      else if (infiltrationObs > 20) permClass = 'Rapid';
+      else if (infiltrationObs > 6.3) permClass = 'Moderate to rapid';
+      else if (infiltrationObs > 2) permClass = 'Moderate';
+      else if (infiltrationObs > 0.5) permClass = 'Slow';
+      else permClass = 'Very slow';
+
+      bulkDensityCache = { bd, porosity, airPorosity, waterPorosity: porosity * 0.5, infiltrationObs, infStatus, permClass };
+
+      const el = document.getElementById('bd-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-blue-900">Results:</p><p class="text-sm">BD: <strong>${bd.toFixed(2)} g/cm³</strong> ${bd < 1.2 ? '✓ Optimal' : bd < 1.5 ? '⚠️ Moderate' : '⚠️ Compacted'}</p><p class="text-sm">Porosity: <strong>${porosity.toFixed(1)}%</strong></p><p class="text-sm">Infiltration: <strong>${infiltrationObs.toFixed(1)} mm/hr</strong> — ${infStatus} (${permClass})</p>`;
+      generateSoilHealthReport();
+    }
+
+    function calcSalinity() {
+      const ec = parseFloat(document.getElementById('so-ec').value);
+      const ph = parseFloat(document.getElementById('so-ph').value);
+      const cec = parseFloat(document.getElementById('so-cec').value);
+      const esp = parseFloat(document.getElementById('so-ese').value);
+      if (!ec || !ph || !cec) return;
+
+      let ecStatus = ec < 2 ? '✓ Non-saline' : ec < 4 ? '⚠️ Slightly saline' : ec < 8 ? '⚠️ Moderately saline' : '🚨 Highly saline';
+      let phStatus = ph < 6 ? '⚠️ Acidic' : ph <= 7.5 ? '✓ Neutral' : ph < 8.5 ? '⚠️ Slightly alkaline' : '🚨 Alkaline';
+      let phClass = ph < 6 ? 'Acidic' : ph <= 7.5 ? 'Optimal' : ph < 8.5 ? 'Slightly alkaline' : 'Very alkaline';
+      let cecStatus = cec < 5 ? '⚠️ Very low' : cec < 15 ? '⚠️ Low to moderate' : cec < 25 ? '✓ Good' : '✓ High';
+      let sodicity = esp < 6 ? '✓ Non-sodic' : esp < 15 ? '⚠️ Sodic' : '🚨 Highly sodic';
+      let salinity = ec < 2 ? 'Not affected' : ec < 4 ? 'May affect sensitive crops' : 'Affects most crops';
+
+      salinityCache = { ec, ph, cec, esp, ecStatus, phStatus, phClass, cecStatus, sodicity, salinity };
+
+      const el = document.getElementById('salinity-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-amber-900">Results:</p><p class="text-sm">EC: <strong>${ec} dS/m</strong> — ${ecStatus}</p><p class="text-sm">pH: <strong>${ph}</strong> — ${phStatus}</p><p class="text-sm">CEC: <strong>${cec} cmol/kg</strong> — ${cecStatus}</p><p class="text-sm">ESP: <strong>${esp}%</strong> — ${sodicity}</p>`;
+      generateSoilHealthReport();
+    }
+
+    function generateSoilHealthReport() {
+      if (!soilTextureCache || !bulkDensityCache || !salinityCache) return;
+      const t = soilTextureCache, bd = bulkDensityCache, s = salinityCache;
+
+      let healthScore = 100;
+      if (bd.bd > 1.5) healthScore -= 10;
+      if (bd.infiltrationObs < 6.3) healthScore -= 15;
+      if (s.ec > 4) healthScore -= 20;
+      if (s.ph < 6 || s.ph > 8.5) healthScore -= 10;
+      if (s.esp > 15) healthScore -= 15;
+      if (s.cec < 5) healthScore -= 5;
+      if (t.om < 1.5) healthScore -= 10;
+      healthScore = Math.max(0, healthScore);
+
+      let healthDesc = healthScore >= 85 ? '🌿 Excellent' : healthScore >= 70 ? '🌱 Good' : healthScore >= 55 ? '⚠️ Fair' : '🚨 Poor';
+
+      const recommendations = [];
+      if (t.om < 2) recommendations.push('Increase organic matter through compost');
+      if (bd.bd > 1.5) recommendations.push('Consider deep ripping for compaction');
+      if (bd.infiltrationObs < 6.3) recommendations.push('Improve drainage');
+      if (s.ec > 4) recommendations.push('Apply fresh water leaching');
+      if (s.ph < 6) recommendations.push('Apply lime to raise pH');
+      if (s.ph > 8.5) recommendations.push('Consider sulfur application');
+      if (s.esp > 15) recommendations.push('Use gypsum + leaching for sodicity');
+
+      document.getElementById('rpt-texture').textContent = t.texture;
+      document.getElementById('rpt-composition').textContent = `Sand ${t.sand}%, Silt ${t.silt}%, Clay ${t.clay}%`;
+      document.getElementById('rpt-awc').textContent = `${(t.awc * 100).toFixed(0)}%`;
+      document.getElementById('rpt-bulk-density').textContent = `${bd.bd.toFixed(2)} g/cm³`;
+      document.getElementById('rpt-porosity').textContent = `${bd.porosity.toFixed(1)}%`;
+      document.getElementById('rpt-drainage').textContent = bd.infStatus;
+      document.getElementById('rpt-infiltration').textContent = `${bd.infiltrationObs.toFixed(1)} mm/hr`;
+      document.getElementById('rpt-infiltration-status').textContent = bd.permClass;
+      document.getElementById('rpt-ph-value').textContent = s.ph.toFixed(1);
+      document.getElementById('rpt-ph-status').textContent = s.phStatus;
+      document.getElementById('rpt-ec').textContent = `${s.ec.toFixed(1)} dS/m`;
+      document.getElementById('rpt-salinity-level').textContent = s.ecStatus;
+      document.getElementById('rpt-cec').textContent = `${s.cec.toFixed(1)} cmol/kg`;
+      document.getElementById('rpt-cec-status').textContent = s.cecStatus;
+      document.getElementById('rpt-esp').textContent = `${s.esp.toFixed(1)}%`;
+      document.getElementById('rpt-om').textContent = `${t.om.toFixed(1)}%`;
+      document.getElementById('rpt-om-status').textContent = t.om < 1.5 ? '⚠️ Low' : t.om > 3 ? '✓ Good' : '— Moderate';
+      document.getElementById('rpt-sodicity').textContent = s.sodicity;
+      document.getElementById('rpt-recommendations').innerHTML = recommendations.length > 0 ? recommendations.map(r => `<li>✓ ${r}</li>`).join('') : '<li>✓ Soil suitable for cultivation</li>';
+      document.getElementById('rpt-health-score').textContent = `${healthScore}%`;
+      document.getElementById('rpt-health-desc').textContent = healthDesc;
+      document.getElementById('soil-health-report').classList.remove('hidden');
+    }
+
+    // Machinery
+    function calcFieldCapacity() {
+      const width = parseFloat(document.getElementById('m-width').value);
+      const speed = parseFloat(document.getElementById('m-speed').value);
+      const eff = parseFloat(document.getElementById('m-eff').value) / 100;
+      const area = parseFloat(document.getElementById('m-area').value);
+      if (!width || !speed || !eff || !area) return;
+      const efc = (width * speed * eff / 10) * 2.471;
+      const timeHours = area / efc;
+      const el = document.getElementById('fc-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `<p class="font-bold text-green-800">Results:</p><p class="text-sm">EFC: <strong>${efc.toFixed(3)} acres/hr</strong></p><p class="text-sm">Time for ${area} acres: <strong>${timeHours.toFixed(1)} hours</strong></p>`;
+    }
+
+    function calcMachineryEconomics() {
+      const tractorHp = parseFloat(document.getElementById('m-tractor-hp').value);
+      const tractorCost = parseFloat(document.getElementById('m-tractor-cost').value);
+      const width = parseFloat(document.getElementById('m-width').value);
+      const speed = parseFloat(document.getElementById('m-speed').value);
+      const eff = parseFloat(document.getElementById('m-eff').value) / 100;
+      const area = parseFloat(document.getElementById('m-area').value);
+      const fuelConsumption = parseFloat(document.getElementById('m-fuel').value);
+      const fuelCost = parseFloat(document.getElementById('m-fuel-cost').value);
+      const usefulLife = parseFloat(document.getElementById('m-useful-life').value);
+      const salvagePercent = parseFloat(document.getElementById('m-salvage').value) / 100;
+      const annualMaintenance = parseFloat(document.getElementById('m-maintenance').value);
+      const annualHours = parseFloat(document.getElementById('m-annual-hours').value);
+      if (!tractorHp || !tractorCost || !width || !speed || !eff || !area || !fuelConsumption || !fuelCost || !usefulLife) return;
+
+      const efc = (width * speed * eff / 10) * 2.471;
+      const timeForJob = area / efc;
+      const annualOperatingHours = annualHours > 0 ? annualHours : timeForJob * 5;
+      const annualDepreciation = (tractorCost * (1 - salvagePercent)) / usefulLife;
+      const depreciationPerHour = annualDepreciation / annualOperatingHours;
+      const fuelCostForJob = timeForJob * fuelConsumption * fuelCost;
+      const maintenancePerHour = annualMaintenance / annualOperatingHours;
+      const operatingCostPerHour = (fuelConsumption * fuelCost) + depreciationPerHour + maintenancePerHour;
+      const totalCostForJob = operatingCostPerHour * timeForJob;
+      const totalCostPerAcre = totalCostForJob / area;
+
+      const el = document.getElementById('mach-econ-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `
+        <div class="space-y-3">
+          <p class="font-bold text-yellow-900">🚜 ${tractorHp} HP Tractor Economics</p>
+          <p class="text-sm">EFC: <strong>${efc.toFixed(3)} acres/hr</strong> | Time: <strong>${timeForJob.toFixed(1)} hrs</strong></p>
+          <p class="text-sm">Fuel for job: <strong>${(timeForJob*fuelConsumption).toFixed(1)} L</strong> (PKR ${fuelCostForJob.toLocaleString('en-PK',{maximumFractionDigits:0})})</p>
+          <p class="text-sm">Operating cost/hr: <strong>PKR ${operatingCostPerHour.toLocaleString('en-PK',{maximumFractionDigits:0})}</strong></p>
+          <p class="text-sm font-semibold">Cost per acre: <strong>PKR ${totalCostPerAcre.toLocaleString('en-PK',{maximumFractionDigits:0})}</strong></p>
+          <p class="text-sm font-semibold">Total job cost: <strong>PKR ${totalCostForJob.toLocaleString('en-PK',{maximumFractionDigits:0})}</strong></p>
+          <p class="text-sm">Annual depreciation: <strong>PKR ${annualDepreciation.toLocaleString('en-PK',{maximumFractionDigits:0})}</strong></p>
+        </div>`;
+    }
+
+    // === Farm Economics Calculations ===
+
+    function calcFarmEconomics() {
+      const area = parseFloat(document.getElementById('fe-area').value);
+      const crop = document.getElementById('fe-crop').value;
+      const yield_ = parseFloat(document.getElementById('fe-yield').value);
+      const price = parseFloat(document.getElementById('fe-price').value);
+      if (!area || !crop || !yield_ || !price) return;
+
+      // Revenue Calculation
+      const totalYield = area * yield_;
+      const grossRevenue = totalYield * price;
+
+      // Cost of Production
+      const seed = parseFloat(document.getElementById('fe-seed').value) * area;
+      const fert = parseFloat(document.getElementById('fe-fert').value) * area;
+      const pesticides = parseFloat(document.getElementById('fe-pesticides').value) * area;
+      const irrigation = parseFloat(document.getElementById('fe-irrigation').value) * area;
+      const labor = parseFloat(document.getElementById('fe-labor').value) * area;
+      const machinery = parseFloat(document.getElementById('fe-machinery').value) * area;
+      const other = parseFloat(document.getElementById('fe-other').value) * area;
+      const landRent = parseFloat(document.getElementById('fe-land-rent').value) * area;
+
+      const totalCostOfProduction = seed + fert + pesticides + irrigation + labor + machinery + other + landRent;
+      const costPerAcre = totalCostOfProduction / area;
+      const costPerTon = totalCostOfProduction / totalYield;
+
+      // Margins
+      const grossMargin = grossRevenue - totalCostOfProduction;
+      const netMargin = grossMargin;
+      const gmPercent = (grossMargin / grossRevenue * 100).toFixed(1);
+      const nmPercent = (netMargin / grossRevenue * 100).toFixed(1);
+
+      const el = document.getElementById('farm-econ-result');
+      el.classList.remove('hidden');
+      el.innerHTML = `
+        <div class="space-y-3">
+          <p class="font-bold text-green-900">💰 Revenue Analysis</p>
+          <p class="text-sm">Yield: <strong>${totalYield.toFixed(2)} Tons</strong> (${yield_.toFixed(2)} T/Acre × ${area} acres)</p>
+          <p class="text-sm">Gross Revenue: <strong>PKR ${grossRevenue.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong> (${price.toLocaleString()} per ton)</p>
+          
+          <p class="font-bold text-blue-900 mt-4">📊 Cost Breakdown (PKR/Acre)</p>
+          <div class="text-sm space-y-1 ml-2">
+            <p>Seed: <strong>${(seed/area).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p>Fertilizer: <strong>${(fert/area).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p>Pesticides: <strong>${(pesticides/area).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p>Irrigation: <strong>${(irrigation/area).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p>Labor: <strong>${(labor/area).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p>Machinery: <strong>${(machinery/area).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p>Other: <strong>${(other/area).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            ${landRent > 0 ? `<p>Land Rent: <strong>${(landRent/area).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>` : ''}
+          </div>
+          <p class="text-sm font-semibold mt-2">Total Cost: <strong>PKR ${totalCostOfProduction.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong> (${costPerAcre.toLocaleString('en-PK', {maximumFractionDigits:0})}/acre)</p>
+          
+          <p class="font-bold text-green-900 mt-4">📈 Profitability</p>
+          <p class="text-sm">Gross Margin: <strong>PKR ${grossMargin.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong> (${gmPercent}%)</p>
+          <p class="text-sm">Net Margin: <strong>PKR ${netMargin.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong> (${nmPercent}%)</p>
+          <p class="text-sm">Cost per Ton: <strong>PKR ${costPerTon.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+        </div>`;
+      
+      // Auto-populate break-even
+      document.getElementById('fe-be-area').value = area;
+      document.getElementById('fe-be-price').value = price;
+    }
+
+    function calcCompleteFarmEconomics() {
+      // Gather all inputs
+      const area = parseFloat(document.getElementById('fe-area').value);
+      const yield_ = parseFloat(document.getElementById('fe-yield').value);
+      const price = parseFloat(document.getElementById('fe-price').value);
+      const seed = parseFloat(document.getElementById('fe-seed').value);
+      const fert = parseFloat(document.getElementById('fe-fert').value);
+      const pesticides = parseFloat(document.getElementById('fe-pesticides').value);
+      const irrigation = parseFloat(document.getElementById('fe-irrigation').value);
+      const labor = parseFloat(document.getElementById('fe-labor').value);
+      const machinery = parseFloat(document.getElementById('fe-machinery').value);
+      const other = parseFloat(document.getElementById('fe-other').value);
+      const landRent = parseFloat(document.getElementById('fe-land-rent').value);
+      const beArea = parseFloat(document.getElementById('fe-be-area').value);
+      const bePrice = parseFloat(document.getElementById('fe-be-price').value);
+      const investment = parseFloat(document.getElementById('fe-investment').value);
+      const projectLife = parseFloat(document.getElementById('fe-project-life').value);
+      const discountRate = parseFloat(document.getElementById('fe-discount-rate').value) / 100;
+      const residualValue = parseFloat(document.getElementById('fe-residual').value) / 100;
+
+      if (!area || !yield_ || !price || !beArea) return;
+
+      // === REVENUE & MARGINS ===
+      const totalYield = area * yield_;
+      const grossRevenue = totalYield * price;
+      const totalCostPerAcre = seed + fert + pesticides + irrigation + labor + machinery + other + landRent;
+      const totalCostOfProduction = totalCostPerAcre * area;
+      const grossMargin = grossRevenue - totalCostOfProduction;
+      const netMargin = grossMargin;
+      const profitPerAcre = netMargin / area;
+      const roiPercent = (netMargin / totalCostOfProduction * 100);
+
+      // === BREAK-EVEN ANALYSIS ===
+      const beYield = totalCostPerAcre / bePrice;
+      const bePrice_ = totalCostPerAcre / yield_;
+      const beAreaNeeded = totalCostOfProduction / (bePrice * yield_);
+      const safetyMarginYield = ((yield_ - beYield) / yield_ * 100);
+      const safetyMarginPrice = ((bePrice_ - bePrice) / bePrice * 100);
+
+      // === INVESTMENT FEASIBILITY ===
+      const annualProfit = netMargin;
+      const annualDepreciation = (investment * (1 - residualValue)) / projectLife;
+      const annualNetCash = annualProfit - annualDepreciation;
+      const simplePayback = investment / annualProfit;
+      let npv = -investment;
+      let irr = 0;
+      for (let t = 1; t <= projectLife; t++) {
+        const residual = (t === projectLife) ? investment * residualValue : 0;
+        npv += (annualProfit + residual) / Math.pow(1 + discountRate, t);
+      }
+      // Approximate IRR calculation
+      for (let r = 0; r <= 0.5; r += 0.001) {
+        let npvTest = -investment;
+        for (let t = 1; t <= projectLife; t++) {
+          const residual = (t === projectLife) ? investment * residualValue : 0;
+          npvTest += (annualProfit + residual) / Math.pow(1 + r, t);
+        }
+        if (npvTest < 0) { irr = r; break; }
+      }
+
+      const el = document.getElementById('complete-econ-report');
+      el.classList.remove('hidden');
+      el.innerHTML = `
+        <div class="font-bold text-lg text-green-900 mb-4">📋 Complete Farm Economics Report</div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-white p-3 rounded border-l-4 border-green-600">
+            <p class="font-semibold text-green-800 mb-2">💰 Revenue & Yield</p>
+            <p class="text-xs text-gray-700">Yield: <strong>${yield_.toFixed(2)} T/Acre</strong></p>
+            <p class="text-xs text-gray-700">Total Production: <strong>${totalYield.toFixed(2)} Tons</strong></p>
+            <p class="text-xs text-gray-700">Market Price: <strong>PKR ${price.toLocaleString('en-PK', {maximumFractionDigits:0})}/T</strong></p>
+            <p class="text-xs text-gray-700">Gross Revenue: <strong>PKR ${grossRevenue.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+          </div>
+          
+          <div class="bg-white p-3 rounded border-l-4 border-blue-600">
+            <p class="font-semibold text-blue-800 mb-2">📊 Cost of Production</p>
+            <p class="text-xs text-gray-700">Per Acre: <strong>PKR ${totalCostPerAcre.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p class="text-xs text-gray-700">Total Farm: <strong>PKR ${totalCostOfProduction.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p class="text-xs text-gray-700">Per Ton: <strong>PKR ${(totalCostOfProduction/totalYield).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+          </div>
+          
+          <div class="bg-white p-3 rounded border-l-4 border-yellow-600">
+            <p class="font-semibold text-yellow-800 mb-2">📈 Margins & Profit</p>
+            <p class="text-xs text-gray-700">Gross Margin: <strong>PKR ${grossMargin.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p class="text-xs text-gray-700">Margin %: <strong>${(grossMargin/grossRevenue*100).toFixed(1)}%</strong></p>
+            <p class="text-xs text-gray-700">Profit/Acre: <strong>PKR ${profitPerAcre.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p class="text-xs text-gray-700">ROI: <strong>${roiPercent.toFixed(1)}%</strong> ${roiPercent > 20 ? '✓' : roiPercent > 0 ? '⚠️' : '🚨'}</p>
+          </div>
+          
+          <div class="bg-white p-3 rounded border-l-4 border-purple-600">
+            <p class="font-semibold text-purple-800 mb-2">🎯 Break-Even Points</p>
+            <p class="text-xs text-gray-700">BE Yield: <strong>${beYield.toFixed(2)} T/Acre</strong></p>
+            <p class="text-xs text-gray-700">Safety Margin: <strong>${safetyMarginYield.toFixed(1)}%</strong></p>
+            <p class="text-xs text-gray-700">BE Price: <strong>PKR ${bePrice_.toLocaleString('en-PK', {maximumFractionDigits:0})}/T</strong></p>
+            <p class="text-xs text-gray-700">Price Buffer: <strong>${safetyMarginPrice.toFixed(1)}%</strong></p>
+          </div>
+          
+          <div class="bg-white p-3 rounded border-l-4 border-cyan-600">
+            <p class="font-semibold text-cyan-800 mb-2">💼 Investment Returns</p>
+            <p class="text-xs text-gray-700">Annual Profit: <strong>PKR ${annualProfit.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p class="text-xs text-gray-700">Simple Payback: <strong>${simplePayback.toFixed(1)} years</strong></p>
+            <p class="text-xs text-gray-700">NPV (${projectLife}yrs): <strong>PKR ${npv.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong> ${npv > 0 ? '✓' : '⚠️'}</p>
+            <p class="text-xs text-gray-700">IRR: <strong>${(irr*100).toFixed(1)}%</strong></p>
+          </div>
+          
+          <div class="bg-white p-3 rounded border-l-4 border-orange-600">
+            <p class="font-semibold text-orange-800 mb-2">📍 Key Metrics</p>
+            <p class="text-xs text-gray-700">Farm Size: <strong>${area} acres</strong></p>
+            <p class="text-xs text-gray-700">Revenue/Acre: <strong>PKR ${(grossRevenue/area).toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+            <p class="text-xs text-gray-700">Production: <strong>${totalYield.toFixed(2)} tons</strong></p>
+            <p class="text-xs text-gray-700">Viability: ${roiPercent > 20 ? '🟢 Highly Viable' : roiPercent > 5 ? '🟡 Viable' : '🔴 At Risk'}</p>
+          </div>
+        </div>
+        
+        <div class="bg-white p-3 rounded border-l-4 border-green-600 mt-4">
+          <p class="font-semibold text-green-800 mb-2">✓ Financial Summary</p>
+          <p class="text-sm text-gray-700">At current price of <strong>PKR ${bePrice.toLocaleString('en-PK', {maximumFractionDigits:0})}/ton</strong> with <strong>${yield_.toFixed(2)} T/acre</strong> yield:</p>
+          <p class="text-sm text-gray-700 mt-1">• Break-even yield is <strong>${beYield.toFixed(2)} T/acre</strong> (safety margin: <strong>${safetyMarginYield.toFixed(1)}%</strong>)</p>
+          <p class="text-sm text-gray-700">• Break-even price is <strong>PKR ${bePrice_.toLocaleString('en-PK', {maximumFractionDigits:0})}/ton</strong> (price buffer: <strong>${safetyMarginPrice.toFixed(1)}%</strong>)</p>
+          <p class="text-sm text-gray-700 mt-1">• Your investment of <strong>PKR ${investment.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong> will be recovered in <strong>${simplePayback.toFixed(1)} years</strong></p>
+          <p class="text-sm text-gray-700">• NPV over ${projectLife} years: <strong>PKR ${npv.toLocaleString('en-PK', {maximumFractionDigits:0})}</strong></p>
+        </div>
+      `;
+    }
+
+    // Data SDK init
+    const handler = {
+      onDataChanged(data) {
+        allData = data;
+        updateDashboard();
+        renderFiltered();
+      }
+    };
+
+    (async () => {
+      const r = await window.dataSdk.init(handler);
+      if (!r.isOk) showStatus('Failed to connect to data store', true);
+      lucide.createIcons();
+    })();
+
+    // === AI CONSULTANT ===
+
+    const issueAnalysis = {
+      'Low yield': {
+        diagnosis: 'Reduced crop output below expected production benchmarks. Common in wheat (3–5 t/ha), rice (5–7 t/ha), and other staple crops.',
+        causes: [
+          '💧 Insufficient water availability or poor irrigation scheduling',
+          '🌍 Suboptimal soil conditions (low fertility, poor texture, compaction)',
+          '🌱 Delayed or inadequate nutrient application (N, P, K)',
+          '⚙️ Inefficient machinery or delayed field operations',
+          '💰 Economic constraints limiting input quality',
+          '🍂 Pest or disease pressure unmanaged'
+        ],
+        recommendations: [
+          '✓ Check irrigation schedule—align with ETc requirements using crop coefficient for your crop',
+          '✓ Conduct soil test (texture, pH, EC, OM, CEC) to identify limiting factors',
+          '✓ Review fertilizer application timing and rates—match crop growth stages',
+          '✓ Inspect for pest/disease symptoms; apply integrated pest management',
+          '✓ Verify field operations (tillage, seeding depth, spacing) align with best practices',
+          '✓ Calculate cost of production and revenue to validate economic viability'
+        ],
+        risks: [
+          '🚨 Continued under-performance leads to income loss',
+          '⚠️ Soil degradation from nutrient mining or erosion',
+          '🔴 Cash flow stress if debt service cannot be met'
+        ],
+        mitigation: [
+          'Implement precision irrigation with soil moisture monitoring',
+          'Apply organic matter (compost, manure) to rebuild soil health',
+          'Use crop-specific Kc values for accurate water scheduling',
+          'Adopt seasonal crop planning with break-even analysis'
+        ],
+        nextSteps: [
+          'Complete soil analysis (texture, pH, EC, CEC, OM)',
+          'Calculate actual water requirements (ETc) for your crop',
+          'Review farm economics—identify cost drivers and revenue optimization',
+          'Design or upgrade irrigation system if efficiency <70%',
+          'Implement soil health improvement plan over 2–3 seasons'
+        ]
+      },
+      'Poor crop growth': {
+        diagnosis: 'Stunted development, delayed emergence, or abnormal plant characteristics indicating stress during critical growth stages.',
+        causes: [
+          '🌍 Adverse soil conditions (pH imbalance, salinity, poor drainage)',
+          '💧 Water stress (insufficient or excessive)',
+          '🌱 Nutrient deficiency (N, P, K, micronutrients)',
+          '🌡️ Unfavorable temperature or weather patterns',
+          '🍂 Early-stage pest or disease infection'
+        ],
+        recommendations: [
+          '✓ Conduct immediate soil pH and EC assessment—salinity >4 dS/m inhibits growth',
+          '✓ Check soil moisture—ensure field capacity maintained without waterlogging',
+          '✓ Visual inspection for nutrient deficiency symptoms (yellowing, purple discoloration)',
+          '✓ Scout for early pest/disease signs; apply remedial treatment if needed',
+          '✓ Monitor plant height, LAI, and biomass weekly for trend analysis'
+        ],
+        risks: [
+          '⚠️ Permanent crop loss if stress occurs during critical stages',
+          '🚨 Total yield loss leading to severe financial impact'
+        ],
+        mitigation: [
+          'Maintain soil pH 6–8 for optimal nutrient availability',
+          'Ensure irrigation matches ETc—apply at correct soil water potential',
+          'Apply split nutrient doses aligned with crop demand',
+          'Use resistant varieties for endemic diseases'
+        ],
+        nextSteps: [
+          'Collect soil and plant tissue samples for lab analysis',
+          'Verify irrigation system is delivering full design capacity',
+          'Adjust nutrient schedule if deficiency confirmed',
+          'Increase monitoring frequency to weekly'
+        ]
+      },
+      'Water-related problem': {
+        diagnosis: 'Irrigation system underperformance, water scarcity, or improper application affecting crop water availability.',
+        causes: [
+          '💧 Low water source discharge (canal closure, tubewell depletion)',
+          '⚙️ System leakage or blockage in pipes, drip lines, or sprinklers',
+          '📉 Inadequate system design—capacity <ETc requirement',
+          '⏰ Poor irrigation scheduling—missed critical demand periods',
+          '🌧️ Abnormal rainfall patterns disrupting irrigation plan'
+        ],
+        recommendations: [
+          '✓ Measure actual system discharge against design specification',
+          '✓ Calculate ETc and seasonal water requirement to validate adequacy',
+          '✓ Inspect entire irrigation system for leaks, clogs, or damage',
+          '✓ Verify pump head and flow rate match TDH and discharge requirements',
+          '✓ Implement soil moisture monitoring (tensiometer, electrical conductivity) to optimize scheduling'
+        ],
+        risks: [
+          '🚨 Crop water stress leading to 30–50% yield loss',
+          '💰 High system repair/replacement cost if upgrade needed',
+          '🔴 Summer season crop failure due to peak demand periods'
+        ],
+        mitigation: [
+          'Install water-saving drip or micro-sprinkler system (efficiency 80–95% vs. 50–70% flood)',
+          'Apply scheduling based on measured soil moisture (not calendar-based)',
+          'Invest in pump upgrade if system undersized',
+          'Build shallow pond/tank for seasonal water storage if source variable'
+        ],
+        nextSteps: [
+          'Test pump discharge and head—compare against design',
+          'Survey field for water distribution uniformity (check multiple locations)',
+          'Calculate seasonal requirement (ETc × days × area)',
+          'Design or repair system if efficiency <70%'
+        ]
+      },
+      'Soil quality concern': {
+        diagnosis: 'Soil chemical or physical degradation reducing fertility, water retention, or workability.',
+        causes: [
+          '🌍 Low organic matter (<1.5%) from continuous cropping without replenishment',
+          '⚠️ Salinity accumulation (EC >4 dS/m) from poor drainage or saline water',
+          '🔺 pH drift (acidic <6 or alkaline >8.5) affecting nutrient availability',
+          '💧 Compaction (BD >1.5 g/cm³) from heavy machinery or puddling',
+          '📉 Nutrient mining (N, P, K) from repeated harvests without replenishment'
+        ],
+        recommendations: [
+          '✓ Conduct comprehensive soil test: texture, BD, porosity, pH, EC, CEC, OM, infiltration rate',
+          '✓ Apply organic amendments (compost, farmyard manure) to increase OM 2–3% over 2–3 years',
+          '✓ Correct pH with lime (acidic) or sulfur (alkaline) based on target crop',
+          '✓ If saline (EC >4), apply fresh water leaching + gypsum (if sodic, ESP >15%)',
+          '✓ Deep rip or subsoil if BD >1.5; reduce traffic on wet soils'
+        ],
+        risks: [
+          '🔴 Permanent soil structure loss if compaction not addressed within 3–5 years',
+          '⚠️ Long-term productivity decline if OM continues to drop',
+          '💰 Crop failure if pH/salinity imbalance severe'
+        ],
+        mitigation: [
+          'Rotate crops; include legumes (nitrogen-fixing) and cover crops',
+          'Reduce machinery passes—consolidate operations',
+          'Maintain minimum OM 2–3% through annual organic input',
+          'Use drip irrigation for saline water to minimize salt surface accumulation'
+        ],
+        nextSteps: [
+          'Collect soil samples (0–15cm, 15–30cm depths) for lab analysis',
+          'Classify texture using soil triangle (sand%, silt%, clay%)',
+          'Calculate bulk density and porosity from core samples',
+          'Develop 3-year soil improvement plan'
+        ]
+      },
+      'Equipment issue': {
+        diagnosis: 'Machinery malfunction or inefficiency reducing field operation effectiveness or increasing costs.',
+        causes: [
+          '⚙️ Pump failure or reduced discharge affecting irrigation',
+          '🚜 Tractor/implement wear reducing field capacity or increasing fuel consumption',
+          '🔧 Clogging or blockage in drip/sprinkler lines',
+          '📉 Misalignment or incorrect implement settings (depth, spacing)',
+          '💨 High operating costs due to poor maintenance or fuel waste'
+        ],
+        recommendations: [
+          '✓ For pump issues: measure discharge/head, inspect suction, check impeller for wear',
+          '✓ For tractor: service engine, inspect hydraulics, verify attachment alignment',
+          '✓ For irrigation: flush lines, check filter condition, inspect emitters for sediment',
+          '✓ Calculate field capacity (EFC) to verify efficiency target 70–80%',
+          '✓ Review fuel consumption—benchmark against specs (target 0.15–0.25 L/kW·hr)'
+        ],
+        risks: [
+          '⚠️ Incomplete field coverage leading to yield gaps',
+          '💰 Downtime during critical planting/harvest seasons',
+          '🚨 Safety hazard if equipment failure unaddressed'
+        ],
+        mitigation: [
+          'Establish preventive maintenance schedule (oil, filter, hydraulic fluid changes)',
+          'Train operator on correct settings and safe operation',
+          'Keep spare parts inventory for critical components',
+          'Monitor fuel consumption—upgrade if >20% above design'
+        ],
+        nextSteps: [
+          'Perform full equipment inspection and diagnostic testing',
+          'Service all components per manufacturer schedule',
+          'Test field capacity after repairs—record time, area, fuel consumed',
+          'Implement maintenance log for future reference'
+        ]
+      },
+      'Cost/profitability issue': {
+        diagnosis: 'Farm economics unfavorable—revenue insufficient to cover costs or support investment repayment.',
+        causes: [
+          '💰 High input costs (seed, fertilizer, labor) relative to output price',
+          '📉 Low yield relative to production potential (underperformance)',
+          '🌍 Poor soil/water management increasing operational costs',
+          '⚙️ Inefficient machinery—high fuel/maintenance expenditure',
+          '🎯 Suboptimal crop choice or market timing'
+        ],
+        recommendations: [
+          '✓ Calculate actual cost of production (seed, fert, pesticide, irrigation, labor, machinery) per acre',
+          '✓ Compare against break-even yield and price based on market benchmarks',
+          '✓ Identify cost drivers—typically labor (30%), irrigation (20%), fertilizer (15%)',
+          '✓ Review yield vs. potential—if gap >20%, focus on agronomic improvement',
+          '✓ Evaluate alternative crops/markets with better margins'
+        ],
+        risks: [
+          '🔴 Negative cash flow preventing debt service or reinvestment',
+          '⚠️ Loss of land or assets if financials deteriorate',
+          '💼 Reduced viability for subsequent seasons'
+        ],
+        mitigation: [
+          'Reduce per-acre costs through drip irrigation (saves water/labor)',
+          'Use soil-test-based nutrition to optimize fertilizer efficiency',
+          'Mechanize labor-intensive operations (planting, harvesting)',
+          'Diversify into higher-margin crops or value-added products',
+          'Access credit at favorable rates for seasonal operations'
+        ],
+        nextSteps: [
+          'Complete detailed cost accounting by input (seed, fert, labor, water, machinery)',
+          'Calculate break-even yield and price for current production scenario',
+          'Perform scenario analysis: cost reduction targets, yield improvement, crop change',
+          'Consult economics calculator to model profitability improvements'
+        ]
+      },
+      'Disease or pest problem': {
+        diagnosis: 'Crop damage from pests, diseases, or weeds reducing yield quality or quantity.',
+        causes: [
+          '🍂 Pathogen pressure (fungal, bacterial, viral) favored by high humidity or poor sanitation',
+          '🐛 Pest population outbreak (insects, rodents) from lack of natural predators or cultural control',
+          '🌱 Weed competition reducing nutrient/water availability',
+          '🌡️ Stress conditions (water, nutrient) predisposing crop to disease',
+          '🚜 Contaminated seed or soil-borne pathogen persistence'
+        ],
+        recommendations: [
+          '✓ Scout field weekly—identify pest/disease at early stage for effective control',
+          '✓ Collect samples and consult local extension for accurate diagnosis',
+          '✓ Use integrated pest management (IPM): cultural, biological, chemical controls',
+          '✓ For fungal disease: apply fungicide at first sign; improve air circulation (spacing, irrigation method)',
+          '✓ For weeds: pre-emergent herbicide, mechanical removal, or mulching'
+        ],
+        risks: [
+          '🚨 Total crop loss if disease spreads unchecked (e.g., rice blast, cotton boll rot)',
+          '💰 High cost of chemical applications if untreated',
+          '🔴 Pathogen/pest spillover to neighboring fields'
+        ],
+        mitigation: [
+          'Use disease-resistant varieties when available',
+          'Rotate crops to break pest/disease cycles',
+          'Maintain crop sanitation—remove infected plant material promptly',
+          'Encourage natural predators (birds, beneficial insects) via habitat',
+          'Avoid over-irrigation and high-N fertilization (predispose to disease)'
+        ],
+        nextSteps: [
+          'Identify pest/disease accurately via field scouting or lab sample',
+          'Establish economic threshold—treat only if damage risk exceeds cost',
+          'Apply appropriate control method: resistant variety, cultural, biological, or chemical',
+          'Monitor effectiveness weekly and adjust approach if needed'
+        ]
+      }
+    };
+
+    document.getElementById('consultant-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const issue = document.getElementById('cons-issue').value;
+      const crop = document.getElementById('cons-crop').value;
+      const description = document.getElementById('cons-description').value;
+
+      if (!issue || !description) {
+        alert('Please fill in all fields.');
+        return;
+      }
+
+      const analysis = issueAnalysis[issue] || issueAnalysis['Low yield'];
+
+      document.getElementById('cons-diagnosis').textContent = analysis.diagnosis;
+      document.getElementById('cons-analysis').innerHTML = analysis.causes.map(c => `<li>${c}</li>`).join('');
+      document.getElementById('cons-recommendations').innerHTML = analysis.recommendations.map(r => `<li>${r}</li>`).join('');
+
+      let riskLevel = 'Moderate';
+      let riskColor = 'text-yellow-700';
+      if (issue === 'Disease or pest problem' || issue === 'Cost/profitability issue') {
+        riskLevel = 'High';
+        riskColor = 'text-red-700';
+      } else if (issue === 'Poor crop growth' || issue === 'Water-related problem') {
+        riskLevel = 'High';
+        riskColor = 'text-red-700';
+      } else if (issue === 'Other') {
+        riskLevel = 'Low';
+        riskColor = 'text-green-700';
+      }
+
+      document.getElementById('cons-risk-level').textContent = riskLevel;
+      document.getElementById('cons-risk-level').className = riskColor;
+      document.getElementById('cons-risks').innerHTML = analysis.risks.map(r => `<li>${r}</li>`).join('');
+      document.getElementById('cons-mitigation').innerHTML = analysis.mitigation.map(m => `<li>${m}</li>`).join('');
+      document.getElementById('cons-next-steps').innerHTML = analysis.nextSteps.map((s, i) => `<li>${i + 1}. ${s}</li>`).join('');
+
+      document.getElementById('consultant-result').classList.remove('hidden');
+      lucide.createIcons();
+    });
+
+
+    let currentReportHTML = '';
+
+    function displayReport(name, html) {
+      currentReportName = name;
+      currentReportHTML = html;
+      const reportOut = document.getElementById('report-output');
+      reportOut.innerHTML = html;
+      reportOut.classList.remove('hidden');
+      document.getElementById('report-actions').classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function generateFarmAudit() {
+      if (allData.length === 0) {
+        alert('No farm profiles available. Add a profile first.');
+        return;
+      }
+      const farm = allData[0];
+      const createdDate = new Date(farm.created_at).toLocaleDateString('en-PK');
+      const html = `
+        <div class="print:p-8">
+          <div class="border-b-2 border-blue-600 pb-4 mb-6">
+            <h1 class="text-3xl font-bold text-blue-900">🏢 Farm Audit Report</h1>
+            <p class="text-sm text-gray-600 mt-2">Generated on ${new Date().toLocaleString('en-PK')}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
+              <p class="font-bold text-blue-900 mb-3">Farm Information</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Farm Name:</strong> ${esc(farm.farm_name || '—')}</p>
+                <p><strong>Client Name:</strong> ${esc(farm.client_name || '—')}</p>
+                <p><strong>Contact:</strong> ${esc(farm.contact || '—')}</p>
+                <p><strong>Location:</strong> ${esc(farm.gps_location || '—')}</p>
+                <p><strong>Date Created:</strong> ${createdDate}</p>
+              </div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
+              <p class="font-bold text-green-900 mb-3">Geographic Details</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Province:</strong> ${esc(farm.province || '—')}</p>
+                <p><strong>District:</strong> ${esc(farm.district || '—')}</p>
+                <p><strong>Area:</strong> <strong>${farm.area_acres || 0}</strong> acres</p>
+              </div>
+            </div>
+            <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-600">
+              <p class="font-bold text-amber-900 mb-3">Soil & Water</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Soil Type:</strong> ${esc(farm.soil_type || '—')}</p>
+                <p><strong>Water Source:</strong> ${esc(farm.water_source || '—')}</p>
+                <p><strong>Irrigation Method:</strong> ${esc(farm.irrigation_method || '—')}</p>
+              </div>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-600">
+              <p class="font-bold text-purple-900 mb-3">Crop Information</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Main Crop:</strong> ${esc(farm.main_crop || '—')}</p>
+                <p class="text-xs text-gray-500 mt-2">Reference crop from database for planning</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 p-4 bg-blue-100 rounded-lg border-l-4 border-blue-600">
+            <p class="font-bold text-blue-900 mb-2">Summary</p>
+            <p class="text-sm text-gray-700">This farm profile represents <strong>${farm.area_acres} acres</strong> in <strong>${esc(farm.district)}, ${esc(farm.province)}</strong> with <strong>${esc(farm.soil_type)}</strong> soil and <strong>${esc(farm.irrigation_method)}</strong> irrigation system. The farm is suitable for <strong>${esc(farm.main_crop)}</strong> cultivation.</p>
+          </div>
+        </div>`;
+      displayReport('Farm Audit Report', html);
+    }
+
+    function generateIrrigationReport() {
+      const eto = parseFloat(document.getElementById('w-eto-input').value) || 5;
+      const kc = parseFloat(document.getElementById('w-kc').value) || 1.0;
+      const eff = parseFloat(document.getElementById('w-eff').value) || 70;
+      const rain = parseFloat(document.getElementById('w-rain').value) || 0;
+      const days = parseFloat(document.getElementById('w-days').value) || 120;
+      const area = parseFloat(document.getElementById('w-area').value) || 5;
+
+      const etc = eto * kc;
+      const netDaily = Math.max(0, etc - rain);
+      const grossDaily = netDaily / (eff / 100);
+      const interval = parseFloat(document.getElementById('i-mad').value) ? 
+        (parseFloat(document.getElementById('i-fc').value) - parseFloat(document.getElementById('i-pwp').value)) * 
+        parseFloat(document.getElementById('i-root').value) * 10 * (parseFloat(document.getElementById('i-mad').value) / 100) / eto / kc 
+        : 5;
+
+      const areaM2 = area * 4046.86;
+      const volDaily = (grossDaily / 1000) * areaM2;
+      const volSeason = volDaily * days;
+
+      const html = `
+        <div class="print:p-8">
+          <div class="border-b-2 border-cyan-600 pb-4 mb-6">
+            <h1 class="text-3xl font-bold text-cyan-900">💧 Irrigation Report</h1>
+            <p class="text-sm text-gray-600 mt-2">Generated on ${new Date().toLocaleString('en-PK')}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
+              <p class="font-bold text-blue-900 mb-3">Crop Water Demand</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>ET₀:</strong> ${eto.toFixed(2)} mm/day</p>
+                <p><strong>Crop Coefficient (Kc):</strong> ${kc.toFixed(2)}</p>
+                <p><strong>ETc (Crop ET):</strong> ${etc.toFixed(2)} mm/day</p>
+                <p><strong>Rainfall:</strong> ${rain.toFixed(2)} mm/day</p>
+                <p><strong>Net Requirement:</strong> ${netDaily.toFixed(2)} mm/day</p>
+              </div>
+            </div>
+            <div class="bg-cyan-50 p-4 rounded-lg border-l-4 border-cyan-600">
+              <p class="font-bold text-cyan-900 mb-3">Water Application</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Irrigation Efficiency:</strong> ${eff}%</p>
+                <p><strong>Gross Requirement:</strong> ${grossDaily.toFixed(2)} mm/day</p>
+                <p><strong>Daily Volume:</strong> ${volDaily.toFixed(1)} m³</p>
+                <p><strong>Weekly Volume:</strong> ${(volDaily * 7).toFixed(1)} m³</p>
+                <p><strong>Seasonal (${days} days):</strong> ${volSeason.toFixed(0)} m³</p>
+              </div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
+              <p class="font-bold text-green-900 mb-3">Scheduling Parameters</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Irrigation Interval:</strong> ${interval.toFixed(1)} days</p>
+                <p><strong>Application Depth:</strong> ${(grossDaily * interval).toFixed(1)} mm</p>
+                <p><strong>Season Length:</strong> ${days} days</p>
+                <p><strong>Farm Area:</strong> ${area} acres (${areaM2.toFixed(0)} m²)</p>
+              </div>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-600">
+              <p class="font-bold text-yellow-900 mb-3">Efficiency Metrics</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>System Loss:</strong> ${(100 - eff)}% (${((100 - eff) / 100 * grossDaily).toFixed(2)} mm)</p>
+                <p><strong>Application Rate:</strong> ${(volDaily / (areaM2 / 10000) / 1).toFixed(2)} mm/hr</p>
+                <p><strong>Recommended Check:</strong> Monitor soil moisture weekly</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 p-4 bg-cyan-100 rounded-lg border-l-4 border-cyan-600">
+            <p class="font-bold text-cyan-900 mb-2">Recommendations</p>
+            <ul class="text-sm text-gray-700 space-y-1">
+              <li>✓ Irrigate every <strong>${interval.toFixed(0)}</strong> days to maintain optimal soil moisture</li>
+              <li>✓ Each irrigation should apply <strong>${(grossDaily * interval).toFixed(1)} mm</strong> of water</li>
+              <li>✓ Total seasonal water requirement: <strong>${volSeason.toFixed(0)} m³</strong></li>
+              <li>✓ Use soil moisture sensors for precision irrigation</li>
+            </ul>
+          </div>
+        </div>`;
+      displayReport('Irrigation Report', html);
+    }
+
+    function generatePumpReport() {
+      const Q = parseFloat(document.getElementById('p-discharge').value) || 10;
+      const staticH = parseFloat(document.getElementById('p-static').value) || 20;
+      const friction = parseFloat(document.getElementById('p-friction').value) || 3;
+      const delivery = parseFloat(document.getElementById('p-delivery').value) || 2;
+      const pEff = parseFloat(document.getElementById('p-peff').value) || 65;
+      const mEff = parseFloat(document.getElementById('p-meff').value) || 85;
+
+      const tdh = staticH + friction + delivery;
+      const whp = (Q * tdh * 9.81) / 1000;
+      const bhp = whp / (pEff / 100);
+      const motorKW = bhp / (mEff / 100);
+      const standardSizes = [0.5, 0.75, 1, 1.5, 2, 3, 5, 7.5, 10, 15, 20, 25, 30, 40, 50];
+      const recommendedPump = standardSizes.find(s => s >= (Q * tdh) / (75 * (pEff / 100))) || 50;
+      const standardMotorSizes = [0.5, 0.75, 1, 1.5, 2, 3, 5, 7.5, 10, 15, 20, 25, 30, 40, 50, 60, 75];
+      const recommendedMotor = standardMotorSizes.find(s => s >= motorKW) || 75;
+
+      const html = `
+        <div class="print:p-8">
+          <div class="border-b-2 border-purple-600 pb-4 mb-6">
+            <h1 class="text-3xl font-bold text-purple-900">⚙️ Pump Design Report</h1>
+            <p class="text-sm text-gray-600 mt-2">Generated on ${new Date().toLocaleString('en-PK')}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-600">
+              <p class="font-bold text-purple-900 mb-3">Operating Conditions</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Discharge:</strong> ${Q} L/s</p>
+                <p><strong>Static Head:</strong> ${staticH} m</p>
+                <p><strong>Friction Loss:</strong> ${friction} m</p>
+                <p><strong>Delivery Head:</strong> ${delivery} m</p>
+                <p><strong>Total Dynamic Head:</strong> <strong>${tdh} m</strong></p>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
+              <p class="font-bold text-blue-900 mb-3">Power Analysis</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Water Power:</strong> ${whp.toFixed(2)} kW</p>
+                <p><strong>Pump Efficiency:</strong> ${pEff}%</p>
+                <p><strong>Brake Power:</strong> ${bhp.toFixed(2)} kW</p>
+                <p><strong>Motor Efficiency:</strong> ${mEff}%</p>
+                <p><strong>Motor Power:</strong> ${motorKW.toFixed(2)} kW</p>
+              </div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
+              <p class="font-bold text-green-900 mb-3">Recommended Equipment</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Pump:</strong> ${recommendedPump} HP</p>
+                <p><strong>Motor:</strong> ${recommendedMotor} HP</p>
+                <p><strong>System Head:</strong> ${tdh} m</p>
+                <p class="text-xs text-gray-500 mt-2">Select next standard size for safe operation</p>
+              </div>
+            </div>
+            <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-600">
+              <p class="font-bold text-red-900 mb-3">Energy Consumption</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Daily (8 hrs):</strong> ${(motorKW * 8).toFixed(1)} kWh</p>
+                <p><strong>Monthly:</strong> ${(motorKW * 8 * 30).toFixed(0)} kWh</p>
+                <p><strong>Annual:</strong> ${(motorKW * 8 * 365).toFixed(0)} kWh</p>
+                <p><strong>Annual Cost:</strong> PKR ${((motorKW * 8 * 365) * 25).toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 p-4 bg-purple-100 rounded-lg border-l-4 border-purple-600">
+            <p class="font-bold text-purple-900 mb-2">Technical Specifications</p>
+            <p class="text-sm text-gray-700">The system requires a <strong>${recommendedPump} HP pump</strong> and <strong>${recommendedMotor} HP motor</strong> to deliver <strong>${Q} L/s</strong> against a <strong>${tdh}m</strong> head. Motor power consumption: <strong>${motorKW.toFixed(2)} kW</strong>. Verify suction head conditions and ensure proper priming.</p>
+          </div>
+        </div>`;
+      displayReport('Pump Design Report', html);
+    }
+
+    function generateSolarReport() {
+      const water = parseFloat(document.getElementById('s-water').value) || 50;
+      const tdh = parseFloat(document.getElementById('s-tdh').value) || 25;
+      const psh = parseFloat(document.getElementById('s-psh').value) || 5.5;
+      const eff = parseFloat(document.getElementById('s-peff').value) || 50;
+      const panelW = parseFloat(document.getElementById('s-panel').value) || 540;
+
+      const hydraulicKWh = (water * 1000 * 9.81 * tdh) / 3600000;
+      const requiredKWh = hydraulicKWh / (eff / 100);
+      const arrayKW = requiredKWh / psh;
+      const numPanels = Math.ceil((arrayKW * 1000) / panelW);
+      const annualKWh = requiredKWh * 365;
+      const annualSavings = annualKWh * 0.5 * 290;
+      const totalSystemCost = arrayKW * 180000;
+      const paybackYears = totalSystemCost / annualSavings;
+      const annualCO2Savings = annualKWh * 0.9;
+
+      const html = `
+        <div class="print:p-8">
+          <div class="border-b-2 border-yellow-600 pb-4 mb-6">
+            <h1 class="text-3xl font-bold text-yellow-900">☀️ Solar Feasibility Report</h1>
+            <p class="text-sm text-gray-600 mt-2">Generated on ${new Date().toLocaleString('en-PK')}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-600">
+              <p class="font-bold text-yellow-900 mb-3">System Requirements</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Daily Water Demand:</strong> ${water} m³</p>
+                <p><strong>Total Dynamic Head:</strong> ${tdh} m</p>
+                <p><strong>Peak Sun Hours:</strong> ${psh} hrs/day</p>
+                <p><strong>Pump Efficiency:</strong> ${eff}%</p>
+              </div>
+            </div>
+            <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-600">
+              <p class="font-bold text-orange-900 mb-3">PV Array Sizing</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Daily Energy Need:</strong> ${requiredKWh.toFixed(2)} kWh</p>
+                <p><strong>Array Capacity:</strong> ${arrayKW.toFixed(2)} kWp</p>
+                <p><strong>Panel Wattage:</strong> ${panelW} W</p>
+                <p><strong>Number of Panels:</strong> <strong>${numPanels}</strong></p>
+              </div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
+              <p class="font-bold text-green-900 mb-3">Annual Production</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Annual Energy:</strong> ${annualKWh.toFixed(0)} kWh</p>
+                <p><strong>Diesel Replacement:</strong> ${(annualKWh * 0.2).toFixed(0)} L</p>
+                <p><strong>CO₂ Reduction:</strong> ${annualCO2Savings.toFixed(0)} kg/year</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
+              <p class="font-bold text-blue-900 mb-3">Financial Analysis</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>System Cost:</strong> PKR ${totalSystemCost.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Annual Savings:</strong> PKR ${annualSavings.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Payback Period:</strong> <strong>${paybackYears.toFixed(1)} years</strong></p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 p-4 bg-yellow-100 rounded-lg border-l-4 border-yellow-600">
+            <p class="font-bold text-yellow-900 mb-2">Recommendations</p>
+            <ul class="text-sm text-gray-700 space-y-1">
+              <li>✓ Install <strong>${numPanels}</strong> solar panels of <strong>${panelW}W</strong> each</li>
+              <li>✓ System capacity: <strong>${arrayKW.toFixed(2)} kWp</strong></li>
+              <li>✓ Annual savings: <strong>PKR ${annualSavings.toLocaleString('en-PK', {maximumFractionDigits: 0})}</strong></li>
+              <li>✓ Investment payback: <strong>${paybackYears.toFixed(1)} years</strong></li>
+              <li>✓ Reduces CO₂ emissions by <strong>${annualCO2Savings.toFixed(0)} kg/year</strong></li>
+            </ul>
+          </div>
+        </div>`;
+      displayReport('Solar Feasibility Report', html);
+    }
+
+    function generateSoilReport() {
+      const texture = soilTextureCache ? soilTextureCache.texture : '—';
+      const sand = soilTextureCache ? soilTextureCache.sand : 0;
+      const silt = soilTextureCache ? soilTextureCache.silt : 0;
+      const clay = soilTextureCache ? soilTextureCache.clay : 0;
+      const om = soilTextureCache ? soilTextureCache.om : 0;
+      const bd = bulkDensityCache ? bulkDensityCache.bd : 0;
+      const porosity = bulkDensityCache ? bulkDensityCache.porosity : 0;
+      const infiltration = bulkDensityCache ? bulkDensityCache.infiltrationObs : 0;
+      const ec = salinityCache ? salinityCache.ec : 0;
+      const ph = salinityCache ? salinityCache.ph : 0;
+      const cec = salinityCache ? salinityCache.cec : 0;
+      const esp = salinityCache ? salinityCache.esp : 0;
+
+      const html = `
+        <div class="print:p-8">
+          <div class="border-b-2 border-amber-600 pb-4 mb-6">
+            <h1 class="text-3xl font-bold text-amber-900">🌍 Soil Analysis Report</h1>
+            <p class="text-sm text-gray-600 mt-2">Generated on ${new Date().toLocaleString('en-PK')}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-amber-50 p-4 rounded-lg border-l-4 border-amber-600">
+              <p class="font-bold text-amber-900 mb-3">Texture Classification</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Soil Type:</strong> ${texture}</p>
+                <p><strong>Sand:</strong> ${sand.toFixed(1)}%</p>
+                <p><strong>Silt:</strong> ${silt.toFixed(1)}%</p>
+                <p><strong>Clay:</strong> ${clay.toFixed(1)}%</p>
+                <p><strong>Organic Matter:</strong> ${om.toFixed(2)}%</p>
+              </div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
+              <p class="font-bold text-green-900 mb-3">Physical Properties</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Bulk Density:</strong> ${bd.toFixed(2)} g/cm³</p>
+                <p><strong>Porosity:</strong> ${porosity.toFixed(1)}%</p>
+                <p><strong>Infiltration:</strong> ${infiltration.toFixed(1)} mm/hr</p>
+                <p class="text-xs text-gray-500">${bd < 1.2 ? '✓ Good structure' : bd < 1.5 ? '⚠️ Moderate' : '🚨 Compacted'}</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
+              <p class="font-bold text-blue-900 mb-3">Chemical Properties</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>pH:</strong> ${ph.toFixed(1)}</p>
+                <p><strong>EC (Salinity):</strong> ${ec.toFixed(1)} dS/m</p>
+                <p><strong>CEC:</strong> ${cec.toFixed(1)} cmol/kg</p>
+                <p><strong>ESP:</strong> ${esp.toFixed(1)}%</p>
+              </div>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-600">
+              <p class="font-bold text-purple-900 mb-3">Suitability Assessment</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Drainage:</strong> ${infiltration < 6.3 ? '⚠️ Slow' : infiltration < 25 ? '✓ Moderate' : '✓ Rapid'}</p>
+                <p><strong>Salinity Level:</strong> ${ec < 2 ? '✓ Non-saline' : ec < 4 ? '⚠️ Slightly saline' : '🚨 Saline'}</p>
+                <p><strong>Fertility:</strong> ${cec < 5 ? 'Low' : cec < 15 ? 'Moderate' : 'Good'}</p>
+                <p><strong>Sodicity:</strong> ${esp < 6 ? '✓ Safe' : esp < 15 ? '⚠️ Sodic' : '🚨 Highly sodic'}</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 p-4 bg-amber-100 rounded-lg border-l-4 border-amber-600">
+            <p class="font-bold text-amber-900 mb-2">Recommendations</p>
+            <ul class="text-sm text-gray-700 space-y-1">
+              <li>✓ Soil texture: <strong>${texture}</strong> suitable for most crops</li>
+              <li>✓ Organic matter: ${om < 1.5 ? '↑ Increase through composting' : '✓ Adequate'}</li>
+              <li>✓ Drainage: ${infiltration < 6.3 ? '↑ Improve via deep ripping' : '✓ Adequate'}</li>
+              <li>✓ pH level: ${ph < 6 ? '↑ Apply lime' : ph > 8.5 ? '↓ Apply sulfur' : '✓ Optimal'}</li>
+            </ul>
+          </div>
+        </div>`;
+      displayReport('Soil Analysis Report', html);
+    }
+
+    function generateMachineryReport() {
+      const tractorHp = parseFloat(document.getElementById('m-tractor-hp').value) || 50;
+      const width = parseFloat(document.getElementById('m-width').value) || 3;
+      const speed = parseFloat(document.getElementById('m-speed').value) || 5;
+      const eff = parseFloat(document.getElementById('m-eff').value) || 75;
+      const area = parseFloat(document.getElementById('m-area').value) || 20;
+      const fuelConsumption = parseFloat(document.getElementById('m-fuel').value) || 8;
+      const fuelCost = parseFloat(document.getElementById('m-fuel-cost').value) || 290;
+      const tractorCost = parseFloat(document.getElementById('m-tractor-cost').value) || 2500000;
+      const usefulLife = parseFloat(document.getElementById('m-useful-life').value) || 10;
+      const annualMaintenance = parseFloat(document.getElementById('m-maintenance').value) || 50000;
+
+      const efc = (width * speed * (eff / 100) / 10) * 2.471;
+      const timeForJob = area / efc;
+      const totalFuel = timeForJob * fuelConsumption;
+      const fuelCostJob = totalFuel * fuelCost;
+      const annualDepreciation = (tractorCost * 0.8) / usefulLife;
+      const operatingCostPerHour = (fuelConsumption * fuelCost) + (annualDepreciation / 500) + (annualMaintenance / 500);
+      const totalCostForJob = operatingCostPerHour * timeForJob;
+      const costPerAcre = totalCostForJob / area;
+
+      const html = `
+        <div class="print:p-8">
+          <div class="border-b-2 border-red-600 pb-4 mb-6">
+            <h1 class="text-3xl font-bold text-red-900">🚜 Machinery Report</h1>
+            <p class="text-sm text-gray-600 mt-2">Generated on ${new Date().toLocaleString('en-PK')}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-600">
+              <p class="font-bold text-red-900 mb-3">Tractor Specifications</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Power:</strong> ${tractorHp} HP</p>
+                <p><strong>Implement Width:</strong> ${width} m</p>
+                <p><strong>Operating Speed:</strong> ${speed} km/hr</p>
+                <p><strong>Field Efficiency:</strong> ${eff}%</p>
+              </div>
+            </div>
+            <div class="bg-orange-50 p-4 rounded-lg border-l-4 border-orange-600">
+              <p class="font-bold text-orange-900 mb-3">Field Capacity</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>EFC:</strong> ${efc.toFixed(3)} acres/hr</p>
+                <p><strong>Time for ${area} acres:</strong> ${timeForJob.toFixed(1)} hours</p>
+                <p><strong>Days Needed:</strong> ${(timeForJob / 8).toFixed(1)} (8-hr days)</p>
+              </div>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-600">
+              <p class="font-bold text-yellow-900 mb-3">Fuel Consumption</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Rate:</strong> ${fuelConsumption} L/hr</p>
+                <p><strong>Total for Job:</strong> ${totalFuel.toFixed(1)} L</p>
+                <p><strong>Fuel Cost:</strong> PKR ${fuelCostJob.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Cost per Hour:</strong> PKR ${(fuelConsumption * fuelCost).toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+              </div>
+            </div>
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
+              <p class="font-bold text-green-900 mb-3">Operating Costs</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Cost per Hour:</strong> PKR ${operatingCostPerHour.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Cost per Acre:</strong> PKR ${costPerAcre.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Total Job Cost:</strong> PKR ${totalCostForJob.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Annual Depreciation:</strong> PKR ${annualDepreciation.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 p-4 bg-red-100 rounded-lg border-l-4 border-red-600">
+            <p class="font-bold text-red-900 mb-2">Summary</p>
+            <p class="text-sm text-gray-700">The <strong>${tractorHp} HP</strong> tractor with <strong>${width}m</strong> implement can cover <strong>${area}</strong> acres in <strong>${timeForJob.toFixed(1)}</strong> hours at an operating cost of <strong>PKR ${operatingCostPerHour.toLocaleString('en-PK', {maximumFractionDigits: 0})}/hr</strong> or <strong>PKR ${costPerAcre.toLocaleString('en-PK', {maximumFractionDigits: 0})}/acre</strong>.</p>
+          </div>
+        </div>`;
+      displayReport('Machinery Report', html);
+    }
+
+    function generateEconomicsReport() {
+      const area = parseFloat(document.getElementById('fe-area').value) || 10;
+      const yield_ = parseFloat(document.getElementById('fe-yield').value) || 3;
+      const price = parseFloat(document.getElementById('fe-price').value) || 50000;
+      const seed = parseFloat(document.getElementById('fe-seed').value) || 8000;
+      const fert = parseFloat(document.getElementById('fe-fert').value) || 12000;
+      const pesticides = parseFloat(document.getElementById('fe-pesticides').value) || 5000;
+      const irrigation = parseFloat(document.getElementById('fe-irrigation').value) || 15000;
+      const labor = parseFloat(document.getElementById('fe-labor').value) || 20000;
+      const machinery = parseFloat(document.getElementById('fe-machinery').value) || 10000;
+      const other = parseFloat(document.getElementById('fe-other').value) || 5000;
+      const landRent = parseFloat(document.getElementById('fe-land-rent').value) || 0;
+      const investment = parseFloat(document.getElementById('fe-investment').value) || 500000;
+      const projectLife = parseFloat(document.getElementById('fe-project-life').value) || 10;
+
+      const totalYield = area * yield_;
+      const grossRevenue = totalYield * price;
+      const costPerAcre = seed + fert + pesticides + irrigation + labor + machinery + other + landRent;
+      const totalCost = costPerAcre * area;
+      const grossMargin = grossRevenue - totalCost;
+      const gmPercent = (grossMargin / grossRevenue * 100).toFixed(1);
+      const profitPerAcre = grossMargin / area;
+      const roi = (grossMargin / totalCost * 100).toFixed(1);
+      const payback = investment / grossMargin;
+
+      const html = `
+        <div class="print:p-8">
+          <div class="border-b-2 border-green-600 pb-4 mb-6">
+            <h1 class="text-3xl font-bold text-green-900">💰 Economic Feasibility Report</h1>
+            <p class="text-sm text-gray-600 mt-2">Generated on ${new Date().toLocaleString('en-PK')}</p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div class="bg-green-50 p-4 rounded-lg border-l-4 border-green-600">
+              <p class="font-bold text-green-900 mb-3">Production & Revenue</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Farm Area:</strong> ${area} acres</p>
+                <p><strong>Yield:</strong> ${yield_.toFixed(2)} tons/acre</p>
+                <p><strong>Total Production:</strong> ${totalYield.toFixed(2)} tons</p>
+                <p><strong>Market Price:</strong> PKR ${price.toLocaleString('en-PK', {maximumFractionDigits: 0})}/ton</p>
+                <p><strong>Gross Revenue:</strong> PKR ${grossRevenue.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+              </div>
+            </div>
+            <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-600">
+              <p class="font-bold text-blue-900 mb-3">Cost of Production</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Per Acre:</strong> PKR ${costPerAcre.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Total Farm:</strong> PKR ${totalCost.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Per Ton:</strong> PKR ${(totalCost / totalYield).toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p class="text-xs text-gray-500 mt-2">Includes seed, fertilizer, pesticides, irrigation, labor, machinery, and other costs</p>
+              </div>
+            </div>
+            <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-600">
+              <p class="font-bold text-yellow-900 mb-3">Profitability Analysis</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Gross Margin:</strong> PKR ${grossMargin.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Margin %:</strong> ${gmPercent}%</p>
+                <p><strong>Profit/Acre:</strong> PKR ${profitPerAcre.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>ROI:</strong> ${roi}%</p>
+              </div>
+            </div>
+            <div class="bg-purple-50 p-4 rounded-lg border-l-4 border-purple-600">
+              <p class="font-bold text-purple-900 mb-3">Investment Metrics</p>
+              <div class="space-y-2 text-sm">
+                <p><strong>Initial Investment:</strong> PKR ${investment.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Annual Profit:</strong> PKR ${grossMargin.toLocaleString('en-PK', {maximumFractionDigits: 0})}</p>
+                <p><strong>Payback Period:</strong> ${payback.toFixed(1)} years</p>
+                <p><strong>Project Life:</strong> ${projectLife} years</p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="bg-white p-4 rounded-lg border-2 border-green-600">
+              <p class="text-3xl font-bold text-green-900">${gmPercent}%</p>
+              <p class="text-sm text-gray-600 mt-1">Gross Margin</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border-2 border-blue-600">
+              <p class="text-3xl font-bold text-blue-900">${roi}%</p>
+              <p class="text-sm text-gray-600 mt-1">Return on Investment</p>
+            </div>
+            <div class="bg-white p-4 rounded-lg border-2 border-purple-600">
+              <p class="text-3xl font-bold text-purple-900">${payback.toFixed(1)}</p>
+              <p class="text-sm text-gray-600 mt-1">Payback Years</p>
+            </div>
+          </div>
+          <div class="mt-6 p-4 bg-green-100 rounded-lg border-l-4 border-green-600">
+            <p class="font-bold text-green-900 mb-2">Viability Assessment</p>
+            <p class="text-sm text-gray-700">${roi > 20 ? '🟢 Highly Viable: Excellent ROI with strong profitability margins.' : roi > 5 ? '🟡 Viable: Acceptable ROI with reasonable profitability.' : '🔴 At Risk: Marginal profitability. Consider cost reduction strategies.'} Annual profit of PKR ${grossMargin.toLocaleString('en-PK', {maximumFractionDigits: 0})} provides payback in ${payback.toFixed(1)} years.</p>
+          </div>
+        </div>`;
+      displayReport('Economic Feasibility Report', html);
+    }
+
+    function printReport() {
+      const printWindow = window.open('', '_blank');
+      const styles = `
+        <style>
+          * { margin: 0; padding: 0; box-sizing: border-box; }
+          body { font-family: 'DM Sans', Arial, sans-serif; line-height: 1.6; color: #333; }
+          @media print {
+            body { background: white; }
+            .print\\:p-8 { padding: 2rem; }
+            button, [onclick] { display: none !important; }
+          }
+          h1 { margin-bottom: 1rem; }
+          h2 { margin-top: 1.5rem; margin-bottom: 1rem; }
+          .border-b-2 { border-bottom: 2px solid; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+          .grid { display: grid; gap: 1.5rem; margin-bottom: 1.5rem; }
+          .grid.grid-cols-2 { grid-template-columns: 1fr 1fr; }
+          .grid.grid-cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+          .p-4 { padding: 1rem; }
+          .rounded-lg { border-radius: 0.5rem; }
+          .border-l-4 { border-left: 4px solid; padding-left: 1rem; }
+          .space-y-2 > * + * { margin-top: 0.5rem; }
+          .space-y-1 > * + * { margin-top: 0.25rem; }
+          .text-sm { font-size: 0.875rem; }
+          .text-3xl { font-size: 1.875rem; }
+          .font-bold { font-weight: 700; }
+          .text-center { text-align: center; }
+          ul { padding-left: 1.5rem; }
+          li { margin: 0.25rem 0; }
+          @media print { 
+            .page-break { page-break-after: always; }
+            body { padding: 0; margin: 0; }
+          }
+        </style>`;
+      printWindow.document.write(`<!DOCTYPE html><html><head>${styles}</head><body>${currentReportHTML}</body></html>`);
+      printWindow.document.close();
+      setTimeout(() => printWindow.print(), 250);
+    }
+
+    function exportPDF() {
+      const element = document.getElementById('report-output');
+      const html2pdf = document.createElement('a');
+      html2pdf.href = 'data:text/html;charset=utf-8,' + encodeURIComponent(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <meta charset="utf-8">
+          <title>${currentReportName}</title>
+          <style>
+            body { font-family: 'DM Sans', Arial, sans-serif; margin: 20px; line-height: 1.6; }
+            h1 { color: #14532d; margin-bottom: 1rem; }
+            .border-b-2 { border-bottom: 2px solid; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+            .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+            .p-4 { padding: 1rem; }
+            .rounded-lg { border-radius: 0.5rem; }
+            .border-l-4 { border-left: 4px solid; padding-left: 1rem; }
+            .space-y-2 > p { margin: 0.5rem 0; }
+            .text-sm { font-size: 0.875rem; }
+            .font-bold { font-weight: 700; }
+            ul { padding-left: 1.5rem; }
+          </style>
+        </head>
+        <body>${currentReportHTML}</body>
+        </html>
+      `);
+      html2pdf.download = currentReportName.replace(/\s+/g, '_') + '_' + new Date().getTime() + '.html';
+      html2pdf.click();
+    }
+
+    function closeReport() {
+      document.getElementById('report-output').classList.add('hidden');
+      document.getElementById('report-actions').classList.add('hidden');
+      currentReportHTML = '';
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a165815ee739fb86',t:'MTc4MzI0NTQ0NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
